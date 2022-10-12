@@ -14,9 +14,15 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { useState } from 'react';
 import { createStackNavigator, TransitionPresets, } from '@react-navigation/stack';
 import Modal from 'react-native-modal';
-
-
-
+import LoginScreen from './src/screens/authentication/Login';
+import RegisterScreen from './src/screens/authentication/Register';
+import NewsScreeen from './src/screens/settings/News';
+import FAQScreen from './src/screens/settings/FAQ';
+import TermsScreen from './src/screens/settings/Terms';
+import PolicyScreen from './src/screens/settings/Policy';
+import RecommendScreen from './src/screens/settings/Recommend';
+import ExpertsScreen from './src/screens/settings/Experts';
+import ForgotScreen from './src/screens/authentication/Forgot';
 
 
 const Stack = createStackNavigator();
@@ -79,6 +85,14 @@ const OptionStack = () => {
     }}
     >
       <Stack.Screen name="Settings" component={OptionScreen} options={{ title: '設定' }} />
+      <Stack.Screen name="Register" component={RegisterScreen} options={{ title: '会員登録' }} />
+      <Stack.Screen name="OptionLogin" component={LoginScreen} options={{ title: 'ログイン' }} />
+      <Stack.Screen name="News" component={NewsScreeen} options={{ title: 'お知らせ' }} />
+      <Stack.Screen name="FAQ" component={FAQScreen} options={{ title: 'よくある質問' }} />
+      <Stack.Screen name="Terms" component={TermsScreen} options={{ title: '利用規約' }} />
+      <Stack.Screen name="Policy" component={PolicyScreen} options={{ title: 'プライバシーポリシー' }} />
+      <Stack.Screen name="Recommend" component={RecommendScreen} options={{ title: '相談カルテを友達にオススメする' }} />
+      <Stack.Screen name="Experts" component={ExpertsScreen} options={{ title: '専門家の方はこちら' }} />
     </Stack.Navigator>
   )
 }
@@ -91,10 +105,17 @@ const AuthStack = () => {
     screenOptions={{ 
       gestureEnabled: true,
       gestureDirection: 'horizontal',
-      ...TransitionPresets.SlideFromRightIOS
+      ...TransitionPresets.SlideFromRightIOS,
+      headerStyle: {
+        backgroundColor: '#675251',
+      },
+      headerTintColor: '#fff'
     }}>
       <Stack.Screen name="MypageAuth" component={BottomNavigator}  options={{headerShown:false}}/>
       <Stack.Screen name="OptionStack" component={OptionStack}  options={{headerShown:false}}/>
+      <Stack.Screen name="Login" component={LoginScreen}  options={{ title: 'ログイン' }} />
+      <Stack.Screen name="AuthRegister" component={RegisterScreen}  options={{ title: '会員登録' }} />
+      <Stack.Screen name="Forgot" component={ForgotScreen}  options={{ title: 'パスワードをお忘れの方はこちら' }} />
     </Stack.Navigator>
   )
 }
