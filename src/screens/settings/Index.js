@@ -1,7 +1,9 @@
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity, Share, Platform } from 'react-native'
 import React from 'react'
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
+
+const user = null;
 
 const Index = () => {
   const navigation = useNavigation();
@@ -30,17 +32,37 @@ const Index = () => {
     navigation.navigate('Policy');
   }
 
-  const handleShowRecommend = () => {
-    navigation.navigate('Recommend');
-  }
 
   const handleShowExperts = () => {
     navigation.navigate('Experts');
   }
 
+  const onShare = async () => {
+    try {
+      const result = await Share.share({
+        message:
+        Platform.OS === 'ios' ? 'https://apps.apple.com/app/id1444264234' : 'https://play.google.com/store/apps/details?id=com.soudankarte.nlinfo',
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+        } else {
+          // shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
 
   return (
-    <View className>
+    <>
+    { !user ? 
+      (
+      <View className>
       <View className=''>
         <Text className='py-3 pl-3'>アカウント</Text>
       </View>
@@ -83,7 +105,7 @@ const Index = () => {
           <Ionicons  name='chevron-forward-outline' size={15} color='silver'/>
         </View>
       </TouchableOpacity>
-      <TouchableOpacity className='bg-white flex-row border-b border-gray-300' onPress={handleShowRecommend}>
+      <TouchableOpacity className='bg-white flex-row border-b border-gray-300' onPress={onShare}>
         <Text className='py-3 pl-3 flex-1'>相談カルテを友達にオススメする</Text>
         <View className='self-center pr-2'>
           <Ionicons  name='chevron-forward-outline' size={15} color='silver'/>
@@ -99,7 +121,15 @@ const Index = () => {
         </View>
       </TouchableOpacity>
     </View>
-
+      )
+      :
+      (
+        <View>
+          <Text>Test</Text>
+        </View>
+      )
+    }
+    </>
   )
 }
 

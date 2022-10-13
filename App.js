@@ -29,6 +29,8 @@ const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator(); 
 
+const user = null;
+
 
 const MedicalRecordsStack = () => {
   return(
@@ -115,7 +117,8 @@ const AuthStack = () => {
       <Stack.Screen name="OptionStack" component={OptionStack}  options={{headerShown:false}}/>
       <Stack.Screen name="Login" component={LoginScreen}  options={{ title: 'ログイン' }} />
       <Stack.Screen name="AuthRegister" component={RegisterScreen}  options={{ title: '会員登録' }} />
-      <Stack.Screen name="Forgot" component={ForgotScreen}  options={{ title: 'パスワードをお忘れの方はこちら' }} />
+      <Stack.Screen name="Forgot" component={ForgotScreen}  options={{ title: 'パスワード再設定' }} />
+      <Stack.Screen name="AuthTerms" component={TermsScreen}  options={{ title: 'パスワードをお忘れの方はこちら' }} />
     </Stack.Navigator>
   )
 }
@@ -129,16 +132,22 @@ const BottomNavigator = () => {
   }
   return (
     <Tab.Navigator
-      initialRouteName='MypageStack'
+      initialRouteName= {!user? 'MedicalRecordsStack' : 'MypageStack'}
       screenOptions={{
         tabBarActiveTintColor: "#17AAB1",
         tabBarInactiveTintColor: "silver",
         headerStyle: {
           backgroundColor: '#675251',
         },
-        // headerTitleStyle:  {
-        //   color: '#fff',
-        // },
+        tabBarStyle:{
+          height:65
+        },
+        tabBarItemStyle: {
+          paddingBottom: 10
+        },
+        tabBarIconStyle:{
+          marginBottom:-15
+        },
         headerTintColor: "#fff",
         gestureEnabled: true,
         gestureDirection: "horizontal",
