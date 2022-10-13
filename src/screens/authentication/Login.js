@@ -1,8 +1,10 @@
-import { View, Text, TextInput,TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
+import { View, Text, TextInput,TouchableOpacity, Alert } from 'react-native'
+import React, { useState, useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { set } from 'react-native-reanimated';
+import { useSelector, useDispatch } from 'react-redux';
+import { login, reset } from '../../redux/userSlice';
 
 
 const Login = () => {
@@ -13,7 +15,10 @@ const Login = () => {
     const [ id, onChangeId ] = useState('');
     const [ password, onChangePassword ] = useState('');
 
+    const {isError, message, isLoading, token, isLogInError , isLogInMessage} = useSelector(state => state.user)
+
     const navigation = useNavigation();
+    const dispatch = useDispatch();
 
     const handleShowForgot = () => {
         navigation.navigate('Forgot');
@@ -28,6 +33,18 @@ const Login = () => {
         setIsPasswordEmpty(false)
     },[])
 
+
+    useEffect(() => {
+        if(isLogInError && isLogInMessage != null){
+            console.log('error executed');
+            Alert.alert('Oops!', message, [{text: 'Understood', onPress: () => {
+            console.log('alert closed!');
+            }}]);
+        }
+
+        dispatch(reset())
+    }, [isLogInError, isLogInMessage])  
+
     const handleLogin = () => {
         if(!id.trim()){
             setIsIdEmpty(true)
@@ -40,6 +57,14 @@ const Login = () => {
         }else{
             setIsPasswordEmpty(false)
         }
+
+        const formData = {
+            email: id,
+            password: password,
+        }
+
+        dispatch(login(formData));
+
     }
 
     return (

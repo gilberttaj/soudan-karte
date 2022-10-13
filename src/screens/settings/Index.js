@@ -41,7 +41,7 @@ const Index = () => {
     try {
       const result = await Share.share({
         message:
-        Platform.OS === 'ios' ? 'https://apps.apple.com/app/id1444264234' : 'https://play.google.com/store/apps/details?id=com.soudankarte.nlinfo',
+        Platform.OS === 'android' ? 'https://play.google.com/store/apps/details?id=com.soudankarte.nlinfo' : 'https://apps.apple.com/app/id1444264234',
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
