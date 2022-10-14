@@ -8,11 +8,14 @@ import {
 import Ionicons from '@expo/vector-icons/Ionicons';
 import React, { useEffect, useLayoutEffect, useState } from 'react'
 import Modal from "react-native-modal";
+<<<<<<< HEAD
 import { useSelector } from 'react-redux';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 
 
 
+=======
+>>>>>>> 327027465dd5f8f0ec0f20d7f2e18e7f6400652f
 
 
 const Index = () => {
