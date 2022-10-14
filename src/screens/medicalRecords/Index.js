@@ -6,17 +6,55 @@ import {
   KeyboardAvoidingView, 
   TouchableOpacity } from 'react-native'
 import Ionicons from '@expo/vector-icons/Ionicons';
-import React from 'react'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
 import Modal from "react-native-modal";
-
-
-
+import { useSelector } from 'react-redux';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 
 
 
 
 
 const Index = () => {
+
+  const navigation = useNavigation();
+
+  const hasToken = useSelector(state => state.user?.token)
+
+  const [ isVisible, setIsVisible ] = useState(false);
+
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if(!hasToken && isFocused){
+      setIsVisible(true);
+    }
+  },[isFocused])
+
+
+
+  const handleCloseModal = () => {
+    setIsVisible(false);
+  }
+
+  const handleShowLogin = () => {
+    navigation.navigate('Login');
+    setIsVisible(false);
+  }
+
+  const handleShowRegister = () => {
+    navigation.navigate('AuthRegister');
+    setIsVisible(false);
+  }
+
+  const handleShowConsultation = () => {
+    if(!hasToken){
+      setIsVisible(true);
+    }else{
+      navigation.navigate('Consultation');
+    }
+  }
+
   return (
     <>
       <View className="w-11/12 " style={styles.mrContainer}>
@@ -63,14 +101,15 @@ const Index = () => {
         </View>
         
         <View className='flex-row self-center items-center mt-4'>
-          <TouchableOpacity className='w-full bg-primary rounded'>
-              <Text className='text-white text-center'>専門家IDを指定しない</Text>
+          <TouchableOpacity className='w-full bg-primary rounded' onPress={handleShowConsultation}>
+              <Text className='text-white text-center py-2'>専門家IDを指定しない</Text>
           </TouchableOpacity>
         </View>
+
         <View className='bg-white justify-center items-center flex-1 relative'>
-            <Modal isVisible={true}>
+            <Modal isVisible={isVisible}  onDismiss={handleCloseModal}>
               <View className='items-center flex-row bg-neutral-100 py-3 justify-center'>
-                <TouchableOpacity className='pl-3 ml-auto absolute left-0'>
+                <TouchableOpacity className='pl-3 ml-auto absolute left-0' onPress={handleCloseModal}>
                   <Ionicons name='close-outline' size={35} color='gray'/>
                 </TouchableOpacity>
                 <View className='self-center items-center'>
@@ -86,7 +125,7 @@ const Index = () => {
                 </View>
 
                 <View className='flex-row justify-center'>  
-                  <TouchableOpacity className='bg-primary mt-5 w-11/12 items-center rounded'>
+                  <TouchableOpacity className='bg-primary mt-5 w-11/12 items-center rounded' onPress={handleShowLogin}>
                     <Text className='text-white py-3'>
                       ログイン
                     </Text>
@@ -94,7 +133,7 @@ const Index = () => {
                 </View>
 
                 <View className='flex-row justify-center mt-3.5 mb-3.5'>  
-                  <TouchableOpacity className='bg-neutral-100 w-11/12 items-center rounded'>
+                  <TouchableOpacity className='bg-neutral-100 w-11/12 items-center rounded' onPress={handleShowRegister}>
                     <Text className='text-gray-500 py-3 font-semibold'>
                     ユーザー登録する
                     </Text>

@@ -67,8 +67,9 @@ const Index = () => {
 
   const handleLogout = () => {
     dispatch(logout());
-    navigation.navigate('BottomNav', {screen: 'Contact'});
+    navigation.navigate('MypageAuth' , { screen: 'Contact' });
   }
+
 
 
   const [isEnabled, setIsEnabled] = useState(true);

@@ -27,6 +27,7 @@ import EmailChangeScreen from '../screens/settings/EmailChange';
 import PasswordChangeScreen from '../screens/settings/PasswordChange';
 import CreditCardRegScreen from '../screens/settings/CreditCardReg';
 import PaidPlanScreen from '../screens/settings/PaidPlans';
+import ConsultationScreen from '../screens/contact/Consultation';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -127,6 +128,7 @@ const AuthStack = () => {
         <Stack.Screen name="AuthRegister" component={RegisterScreen}  options={{ title: '会員登録' }} />
         <Stack.Screen name="Forgot" component={ForgotScreen}  options={{ title: 'パスワード再設定' }} />
         <Stack.Screen name="AuthTerms" component={TermsScreen}  options={{ title: 'パスワードをお忘れの方はこちら' }} />
+        <Stack.Screen name="Consultation" component={ConsultationScreen} options={{ title: '相談カルテを作成' }}/>
     </Stack.Navigator>
     )
 }

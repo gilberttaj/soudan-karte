@@ -14,6 +14,10 @@ const Index = () => {
     navigation.navigate('Login');
   }
 
+  const handleShowConsultation = () => {
+    navigation.navigate('Consultation');
+  }
+
 
   return (
     <>
@@ -57,7 +61,7 @@ const Index = () => {
             <Text className='text-stone-600 text-center'>相談カルテを作成してみましょう </Text>
           </View>
           <View className='w-3/5 bg-primary text-white mt-2 rounded'>
-            <TouchableOpacity className='bg-button text-white'>
+            <TouchableOpacity className='bg-button text-white' onPress={handleShowConsultation}>
               <Text className='py-2 text-center text-white'>相談カルテを作成する</Text>
             </TouchableOpacity>
           </View>
