@@ -22,9 +22,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useSelector, useDispatch } from 'react-redux'
 import { useEffect, useState } from 'react';
 import { checkHasToken } from '../redux/userSlice';
-
-
-
+import ProfileScreen from '../screens/settings/Profile';
+import EmailChangeScreen from '../screens/settings/EmailChange';
+import PasswordChangeScreen from '../screens/settings/PasswordChange';
+import CreditCardRegScreen from '../screens/settings/CreditCardReg';
+import PaidPlanScreen from '../screens/settings/PaidPlans';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -94,6 +96,12 @@ const OptionStack = () => {
         <Stack.Screen name="Policy" component={PolicyScreen} options={{ title: 'プライバシーポリシー' }} />
         <Stack.Screen name="Recommend" component={RecommendScreen} options={{ title: '相談カルテを友達にオススメする' }} />
         <Stack.Screen name="Experts" component={ExpertsScreen} options={{ title: '専門家の方はこちら' }} />
+        <Stack.Screen name="Profile" component={ProfileScreen} options={{ title: 'プロフィール設定' }} />
+        <Stack.Screen name="EmailChange" component={EmailChangeScreen} options={{ title: 'メールアドレス変更' }} />
+        <Stack.Screen name="PasswordChange" component={PasswordChangeScreen} options={{ title: 'パスワード変更' }} />
+        <Stack.Screen name="CreditCardReg" component={CreditCardRegScreen} options={{ title: 'クレジットカード登録' }} />
+        <Stack.Screen name="PaidPlans" component={PaidPlanScreen} options={{ title:'有料プラン' }} />
+        <Stack.Screen name="BottomNav" component={BottomNavigator}  options={{headerShown:false}}/>
     </Stack.Navigator>
     )
 }
@@ -135,8 +143,6 @@ const BottomNavigator = () => {
 
     
     
-
-    const dispatch = useDispatch();
 
     
     const token = useSelector(state => state.user?.token)

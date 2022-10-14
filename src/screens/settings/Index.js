@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, Share, Platform, ScrollView, Switch } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import { logout } from '../../redux/userSlice';
@@ -44,10 +44,32 @@ const Index = () => {
     navigation.navigate('Experts');
   }
 
+  const handleShowProfile = () => {
+    navigation.navigate('Profile');
+  }
+
+  const handleShowEmailChange = () => {
+    navigation.navigate('EmailChange');
+  }
+
+  const handleShowPasswordChange = () => {
+    navigation.navigate('PasswordChange');
+  }
+
+  const handleShowCreditCardReg = () => {
+    navigation.navigate('CreditCardReg');
+  }
+
+  const handleShowPaidPlans = () => {
+    navigation.navigate('PaidPlans');
+  }
+
+
   const handleLogout = () => {
     dispatch(logout());
-    console.log('clicked')
+    navigation.navigate('BottomNav', {screen: 'Contact'});
   }
+
 
   const [isEnabled, setIsEnabled] = useState(true);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
@@ -147,7 +169,7 @@ for Android ${android}`
           <Text className='py-3 pl-3'>アカウント</Text>
         </View>
   
-          <TouchableOpacity className='bg-white flex-row border-b mb-0.5 border-gray-300' onPress={handleShowRegister}>
+          <TouchableOpacity className='bg-white flex-row border-b mb-0.5 border-gray-300' onPress={handleShowProfile}>
             <Text className='py-3 pl-3 flex-1'>プロフィール設定</Text>
             <View className='self-center pr-2'>
               <Ionicons  name='chevron-forward-outline' size={15} color='silver'/>
@@ -155,14 +177,14 @@ for Android ${android}`
           </TouchableOpacity>
   
   
-        <TouchableOpacity className='bg-white flex-row border-b border-gray-300 mb-0.5' onPress={handleShowLogin}>
+        <TouchableOpacity className='bg-white flex-row border-b border-gray-300 mb-0.5' onPress={handleShowEmailChange}>
           <Text className='py-3 pl-3 flex-1'>メールアドレス変更</Text>
           <View className='self-center pr-2'>
             <Ionicons  name='chevron-forward-outline' size={15} color='silver'/>
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity className='bg-white flex-row border-b border-gray-300 mb-0.5' onPress={handleShowLogin}>
+        <TouchableOpacity className='bg-white flex-row border-b border-gray-300 mb-0.5' onPress={handleShowPasswordChange}>
           <Text className='py-3 pl-3 flex-1'>パスワード変更</Text>
           <View className='self-center pr-2'>
             <Ionicons  name='chevron-forward-outline' size={15} color='silver'/>
@@ -182,14 +204,14 @@ for Android ${android}`
           </View>
         </View>
 
-        <TouchableOpacity className='bg-white flex-row border-b border-gray-300 mb-0.5' onPress={handleShowLogin}>
+        <TouchableOpacity className='bg-white flex-row border-b border-gray-300 mb-0.5' onPress={handleShowCreditCardReg}>
           <Text className='py-3 pl-3 flex-1'>クレジットカード登録</Text>
           <View className='self-center pr-2'>
             <Ionicons  name='chevron-forward-outline' size={15} color='silver'/>
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity className='bg-white flex-row border-b border-gray-300 mb-0.5' onPress={handleShowLogin}>
+        <TouchableOpacity className='bg-white flex-row border-b border-gray-300 mb-0.5' onPress={handleShowPaidPlans}>
           <Text className='py-3 pl-3 flex-1'>有料プラン</Text>
           <View className='self-center pr-2'>
             <Ionicons  name='chevron-forward-outline' size={15} color='silver'/>
@@ -242,7 +264,7 @@ for Android ${android}`
           <Text className='py-2.5 pl-3'></Text>
         </View>
 
-        <TouchableOpacity className='bg-white flex-row border-b border-gray-300 mb-1' onPress={handleLogout}>
+        <TouchableOpacity className='bg-white flex-row border-b border-gray-300 mb-1'>
           <Text className='py-3 pl-3 flex-1'>相談カルテを削除する</Text>
           <View className='self-center pr-2'>
             <Ionicons  name='chevron-forward-outline' size={15} color='silver'/>
