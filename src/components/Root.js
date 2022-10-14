@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useLayoutEffect } from 'react'
 import { SafeAreaView, StyleSheet, Text, View, Icon, TouchableOpacity, Easing, Animated } from 'react-native';
 import { NavigationContainer, useNavigation, useRoute } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -22,6 +22,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useSelector, useDispatch } from 'react-redux'
 import { useEffect, useState } from 'react';
 import { checkHasToken } from '../redux/userSlice';
+
 
 
 
@@ -101,8 +102,6 @@ const OptionStack = () => {
 
 const AuthStack = () => {
 
-
-
     return(
     <Stack.Navigator 
     screenOptions={{ 
@@ -130,74 +129,80 @@ const BottomNavigator = () => {
     const route = useRoute();
 
 
-    // console.log(route);
-
     const handleShowOptions = () => {
     navigation.navigate('OptionStack')
     }
 
-    const hasToken = useSelector(state => state.user.token)
-    console.log(hasToken);
+    
+    
 
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        dispatch(checkHasToken());
-    }, [hasToken]);
+    
+    const token = useSelector(state => state.user?.token)
 
+    useEffect(() => {
+        if(token){
+            console.log('naay token');
+            navigation.navigate('MedicalRecords');
+        }
+    },[token])
+
+    console.log(token);
 
     return (
-    <Tab.Navigator
-        initialRouteName= {hasToken? 'MedicalRecords' : 'MypageStack'}
-        screenOptions={{
-        tabBarActiveTintColor: "#17AAB1",
-        tabBarInactiveTintColor: "silver",
-        headerStyle: {
-            backgroundColor: '#675251',
-        },
-        tabBarStyle:{
-            height:65
-        },
-        tabBarItemStyle: {
-            paddingBottom: 10
-        },
-        tabBarIconStyle:{
-            marginBottom:-15
-        },
-        headerTintColor: "#fff",
-        gestureEnabled: true,
-        gestureDirection: "horizontal",
-        ...TransitionPresets.SlideFromRightIOS
-    }}>
-        <Tab.Screen name="MedicalRecords" component={MedicalRecordsStack} options={{
-                    tabBarIcon: ({color, size}) => (<Ionicons name="create" color={color} size={size}></Ionicons>),
-                    title: '相談力ルテ作成',
-                    tabBarLabel: 'カルテ登録'
-        }}/>
-        <Tab.Screen name="Contact" component={ContactStack} options={{
-                    tabBarIcon: ({color, size}) => (<Ionicons name="chatbox-ellipses" color={color} size={size}></Ionicons>),
-                    title: '専門家連絡',
-        }}/>
-        <Tab.Screen name="MypageStack" component={MypageStack} options={{
-                    tabBarIcon: ({color, size}) => (<Ionicons name="person" color={color} size={size}></Ionicons>),
-                    title: 'マイページ',
-                    headerRight: (props) => (
-                    <TouchableOpacity
-                        android_ripple={{
-                        color: '#fff',
-                        foreground: true,
-                        borderless: true,
-                        }} onPress={handleShowOptions}>
-                        <Ionicons
-                        style={{paddingRight: 15}}
-                        name='settings'
-                        size={20}
-                        color='#fff'
-                        />
-                    </TouchableOpacity>
-                    )
-        }}/>
-    </Tab.Navigator>
+            <Tab.Navigator
+                initialRouteName='Mypage'
+                screenOptions={{
+                tabBarActiveTintColor: "#17AAB1",
+                tabBarInactiveTintColor: "silver",
+                headerStyle: {
+                    backgroundColor: '#675251',
+                },
+                tabBarStyle:{
+                    height:65
+                },
+                tabBarItemStyle: {
+                    paddingBottom: 10
+                },
+                tabBarIconStyle:{
+                    marginBottom:-15
+                },
+                headerTintColor: "#fff",
+                gestureEnabled: true,
+                gestureDirection: "horizontal",
+                ...TransitionPresets.SlideFromRightIOS
+            }}>
+                <Tab.Screen name="MedicalRecords" component={MedicalRecordsStack} options={{
+                            tabBarIcon: ({color, size}) => (<Ionicons name="create" color={color} size={size}></Ionicons>),
+                            title: '相談力ルテ作成',
+                            tabBarLabel: 'カルテ登録'
+                }}/>
+                <Tab.Screen name="Contact" component={ContactStack} options={{
+                            tabBarIcon: ({color, size}) => (<Ionicons name="chatbox-ellipses" color={color} size={size}></Ionicons>),
+                            title: '専門家連絡',
+                }}/>
+                <Tab.Screen name="Mypage" component={MypageStack} options={{
+                            tabBarIcon: ({color, size}) => (<Ionicons name="person" color={color} size={size}></Ionicons>),
+                            title: 'マイページ',
+                            headerRight: (props) => (
+                            <TouchableOpacity
+                                android_ripple={{
+                                color: '#fff',
+                                foreground: true,
+                                borderless: true,
+                                }} onPress={handleShowOptions}>
+                                <Ionicons
+                                style={{paddingRight: 15}}
+                                name='settings'
+                                size={20}
+                                color='#fff'
+                                />
+                            </TouchableOpacity>
+                            )
+                }}/>
+            </Tab.Navigator>
+
     );
 }
 
@@ -210,8 +215,11 @@ const Root = () => {
 
     const dispatch = useDispatch();
 
+    useEffect(() => {
+        dispatch(checkHasToken());
+    }, [hasToken]);
 
-    
+
 
     return (
         <AuthStack/>

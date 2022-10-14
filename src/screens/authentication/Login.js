@@ -5,9 +5,12 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { set } from 'react-native-reanimated';
 import { useSelector, useDispatch } from 'react-redux';
 import { login, reset } from '../../redux/userSlice';
+import AppLoader from '../../components/AppLoader';
 
 
 const Login = () => {
+
+    const hasToken = useSelector(state => state.user?.token)
 
     const [ isIdEmpty, setIsIdEmpty ] = useState(false);
     const [ isPasswordEmpty, setIsPasswordEmpty ] = useState(false);
@@ -41,9 +44,15 @@ const Login = () => {
             console.log('alert closed!');
             }}]);
         }
-
         dispatch(reset())
     }, [isLogInError, isLogInMessage])  
+
+
+    useEffect(() => {
+        if(hasToken){
+            navigation.navigate('MypageAuth' , { screen: 'Contact' });
+        }
+    }, [hasToken])
 
     const handleLogin = () => {
         if(!id.trim()){
@@ -64,9 +73,12 @@ const Login = () => {
         }
 
         dispatch(login(formData));
-
     }
 
+    if(isLoading){
+        return <AppLoader/>
+    }
+    
     return (
         <View>
             <View className='relative'>

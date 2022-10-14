@@ -16,6 +16,7 @@ const storeData = async (data) => {
 const removeItem = async() => {
     try {
         await AsyncStorage.removeItem('token');
+        console.log('logout');
     }
     catch(exception) {
         console.log(exception)

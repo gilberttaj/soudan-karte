@@ -1,11 +1,18 @@
-import { View, Text, TouchableOpacity, Share, Platform } from 'react-native'
-import React from 'react'
+import { View, Text, TouchableOpacity, Share, Platform, ScrollView, Switch } from 'react-native'
+import React, { useState } from 'react'
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
+import { logout } from '../../redux/userSlice';
+import { useSelector, useDispatch } from 'react-redux';
 
-const user = null;
+
+
 
 const Index = () => {
+
+  const hasToken = useSelector(state => state.user?.token)
+  
+  const dispatch = useDispatch();
   const navigation = useNavigation();
 
   const handleShowRegister = () => {
@@ -37,11 +44,22 @@ const Index = () => {
     navigation.navigate('Experts');
   }
 
+  const handleLogout = () => {
+    dispatch(logout());
+    console.log('clicked')
+  }
+
+  const [isEnabled, setIsEnabled] = useState(true);
+  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+
   const onShare = async () => {
+    const iOS = 'https://apps.apple.com/app/id1444264234';
+    const android = 'https://play.google.com/store/apps/details?id=com.soudankarte.nlinfo';
     try {
       const result = await Share.share({
-        message:
-        Platform.OS === 'android' ? 'https://play.google.com/store/apps/details?id=com.soudankarte.nlinfo' : 'https://apps.apple.com/app/id1444264234',
+        message: `for iOS ${iOS}
+for Android ${android}`
+    
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
@@ -60,7 +78,7 @@ const Index = () => {
 
   return (
     <>
-    { !user ? 
+    { !hasToken ? 
       (
       <View className>
       <View className=''>
@@ -124,9 +142,113 @@ const Index = () => {
       )
       :
       (
-        <View>
-          <Text>Test</Text>
+      <ScrollView className>
+        <View className=''>
+          <Text className='py-3 pl-3'>アカウント</Text>
         </View>
+  
+          <TouchableOpacity className='bg-white flex-row border-b mb-0.5 border-gray-300' onPress={handleShowRegister}>
+            <Text className='py-3 pl-3 flex-1'>プロフィール設定</Text>
+            <View className='self-center pr-2'>
+              <Ionicons  name='chevron-forward-outline' size={15} color='silver'/>
+            </View>
+          </TouchableOpacity>
+  
+  
+        <TouchableOpacity className='bg-white flex-row border-b border-gray-300 mb-0.5' onPress={handleShowLogin}>
+          <Text className='py-3 pl-3 flex-1'>メールアドレス変更</Text>
+          <View className='self-center pr-2'>
+            <Ionicons  name='chevron-forward-outline' size={15} color='silver'/>
+          </View>
+        </TouchableOpacity>
+
+        <TouchableOpacity className='bg-white flex-row border-b border-gray-300 mb-0.5' onPress={handleShowLogin}>
+          <Text className='py-3 pl-3 flex-1'>パスワード変更</Text>
+          <View className='self-center pr-2'>
+            <Ionicons  name='chevron-forward-outline' size={15} color='silver'/>
+          </View>
+        </TouchableOpacity>
+
+        <View className='bg-white flex-row border-b border-gray-300 mb-0.5' onPress={handleShowLogin}>
+          <Text className='py-3 pl-3 flex-1'>Push通知を受け取る</Text>
+          <View className='self-center pr-2'>
+          <Switch
+              trackColor={{ false: "#767577", true: "#C3E9EB" }}
+              thumbColor={isEnabled ? "#17A7AE" : "#f4f3f4"}
+              ios_backgroundColor="#3e3e3e"
+              onValueChange={toggleSwitch}
+              value={isEnabled}
+            />
+          </View>
+        </View>
+
+        <TouchableOpacity className='bg-white flex-row border-b border-gray-300 mb-0.5' onPress={handleShowLogin}>
+          <Text className='py-3 pl-3 flex-1'>クレジットカード登録</Text>
+          <View className='self-center pr-2'>
+            <Ionicons  name='chevron-forward-outline' size={15} color='silver'/>
+          </View>
+        </TouchableOpacity>
+
+        <TouchableOpacity className='bg-white flex-row border-b border-gray-300 mb-0.5' onPress={handleShowLogin}>
+          <Text className='py-3 pl-3 flex-1'>有料プラン</Text>
+          <View className='self-center pr-2'>
+            <Ionicons  name='chevron-forward-outline' size={15} color='silver'/>
+          </View>
+        </TouchableOpacity>
+
+
+        <View className=''>
+          <Text className='py-3 pl-3'>情報</Text>
+        </View>
+        <TouchableOpacity className='bg-white border-b border-gray-300 mb-0.5' onPress={handleShowNews}>
+          <Text className='py-3 pl-3'>お知らせ</Text>
+        </TouchableOpacity>
+        <TouchableOpacity className='bg-white flex-row border-b border-gray-300 mb-0.5' onPress={handleShowFAQ}>
+          <Text className='py-3 pl-3 flex-1'>よくある質問</Text>
+          <View className='self-center pr-2'>
+            <Ionicons  name='chevron-forward-outline' size={15} color='silver'/>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity className='bg-white flex-row border-b border-gray-300 mb-0.5' onPress={handleShowTerms}>
+          <Text className='py-3 pl-3 flex-1'>利用規約</Text>
+          <View className='self-center pr-2'>
+            <Ionicons  name='chevron-forward-outline' size={15} color='silver'/>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity className='bg-white flex-row border-b border-gray-300 mb-0.5' onPress={handleShowPolicy}>
+          <Text className='py-3 pl-3 flex-1'>プライバシーポリシー</Text>
+          <View className='self-center pr-2'>
+            <Ionicons  name='chevron-forward-outline' size={15} color='silver'/>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity className='bg-white flex-row border-b border-gray-300' onPress={onShare}>
+          <Text className='py-3 pl-3 flex-1'>相談カルテを友達にオススメする</Text>
+          <View className='self-center pr-2'>
+            <Ionicons  name='chevron-forward-outline' size={15} color='silver'/>
+          </View>
+        </TouchableOpacity>
+        <View className=''>
+          <Text className='py-2.5 pl-3'>その他</Text>
+        </View>
+  
+        <TouchableOpacity className='bg-white flex-row border-b border-gray-300 mb-0.5' onPress={handleLogout}>
+          <Text className='py-3 pl-3 flex-1'>ログアウト</Text>
+          <View className='self-center pr-2'>
+            <Ionicons  name='chevron-forward-outline' size={15} color='silver'/>
+          </View>
+        </TouchableOpacity>
+
+        <View className=''>
+          <Text className='py-2.5 pl-3'></Text>
+        </View>
+
+        <TouchableOpacity className='bg-white flex-row border-b border-gray-300 mb-1' onPress={handleLogout}>
+          <Text className='py-3 pl-3 flex-1'>相談カルテを削除する</Text>
+          <View className='self-center pr-2'>
+            <Ionicons  name='chevron-forward-outline' size={15} color='silver'/>
+          </View>
+        </TouchableOpacity>
+      </ScrollView>
       )
     }
     </>
