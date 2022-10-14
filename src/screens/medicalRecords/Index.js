@@ -10,12 +10,6 @@ import React from 'react'
 import Modal from "react-native-modal";
 
 
-
-
-
-
-
-
 const Index = () => {
   return (
     <>
@@ -68,7 +62,7 @@ const Index = () => {
           </TouchableOpacity>
         </View>
         <View className='bg-white justify-center items-center flex-1 relative'>
-            <Modal isVisible={true}>
+            <Modal isVisible={false}>
               <View className='items-center flex-row bg-neutral-100 py-3 justify-center'>
                 <TouchableOpacity className='pl-3 ml-auto absolute left-0'>
                   <Ionicons name='close-outline' size={35} color='gray'/>
