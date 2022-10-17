@@ -1,5 +1,5 @@
 import React, { useLayoutEffect } from 'react'
-import { SafeAreaView, StyleSheet, Text, View, Icon, TouchableOpacity, Easing, Animated } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, View, Icon, TouchableOpacity, Easing, Animated, Image } from 'react-native';
 import { NavigationContainer, useNavigation, useRoute } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -28,6 +28,10 @@ import PasswordChangeScreen from '../screens/settings/PasswordChange';
 import CreditCardRegScreen from '../screens/settings/CreditCardReg';
 import PaidPlanScreen from '../screens/settings/PaidPlans';
 import ConsultationScreen from '../screens/contact/Consultation';
+import { imageUrl } from '../../assets/Icons';
+
+
+
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -200,12 +204,10 @@ const BottomNavigator = () => {
                                 foreground: true,
                                 borderless: true,
                                 }} onPress={handleShowOptions}>
-                                <Ionicons
-                                style={{paddingRight: 15}}
-                                name='settings'
-                                size={20}
-                                color='#fff'
-                                />
+                                <View className='pr-3'>
+                                <Image source={require('../../assets/ic_nav_cog.png')} style={{width:24, height:24}}/>
+                                </View> 
+                                
                             </TouchableOpacity>
                             )
                 }}/>
@@ -226,7 +228,6 @@ const Root = () => {
     useEffect(() => {
         dispatch(checkHasToken());
     }, [hasToken]);
-
 
 
     return (
