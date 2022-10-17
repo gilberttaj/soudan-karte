@@ -107,7 +107,15 @@ const OptionStack = () => {
         <Stack.Screen name="Profile" component={ProfileScreen} options={{ title: 'プロフィール設定' }} />
         <Stack.Screen name="EmailChange" component={EmailChangeScreen} options={{ title: 'メールアドレス変更' }} />
         <Stack.Screen name="PasswordChange" component={PasswordChangeScreen} options={{ title: 'パスワード変更' }} />
-        <Stack.Screen name="CreditCardReg" component={CreditCardRegScreen} options={{ title: 'クレジットカード登録' }} />
+        <Stack.Screen name="CreditCardReg" component={CreditCardRegScreen} 
+            options={{ 
+                title: 'クレジットカード登録',
+                    headerRight: () => (
+                    <Text className="text-white mr-2">編集</Text>
+                  ),
+            }} 
+            
+        />
         <Stack.Screen name="CreditCardInfo" component={CreditCardInfoScreen} options={{ title: 'クレジットカードの追加' }} />
         <Stack.Screen name="PaidPlans" component={PaidPlanScreen} options={{ title:'有料プラン' }} />
         <Stack.Screen name="PaidPlanSignup" component={PaidPlanSignupScreen} options={{ title:'有料プラン登録' }} />
