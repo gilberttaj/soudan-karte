@@ -27,7 +27,10 @@ import EmailChangeScreen from '../screens/settings/EmailChange';
 import PasswordChangeScreen from '../screens/settings/PasswordChange';
 import CreditCardRegScreen from '../screens/settings/CreditCardReg';
 import PaidPlanScreen from '../screens/settings/PaidPlans';
+import PaidPlanInfoScreen from '../screens/settings/PaidPlanInfo';
+import PaidPlanSignupScreen from '../screens/settings/PaidPlanSignup';
 import ConsultationScreen from '../screens/contact/Consultation';
+import CreditCardInfoScreen from '../screens/settings/CreditCardInfo';
 import { imageUrl } from '../../assets/Icons';
 
 
@@ -105,7 +108,10 @@ const OptionStack = () => {
         <Stack.Screen name="EmailChange" component={EmailChangeScreen} options={{ title: 'メールアドレス変更' }} />
         <Stack.Screen name="PasswordChange" component={PasswordChangeScreen} options={{ title: 'パスワード変更' }} />
         <Stack.Screen name="CreditCardReg" component={CreditCardRegScreen} options={{ title: 'クレジットカード登録' }} />
+        <Stack.Screen name="CreditCardInfo" component={CreditCardInfoScreen} options={{ title: 'クレジットカードの追加' }} />
         <Stack.Screen name="PaidPlans" component={PaidPlanScreen} options={{ title:'有料プラン' }} />
+        <Stack.Screen name="PaidPlanSignup" component={PaidPlanSignupScreen} options={{ title:'有料プラン登録' }} />
+        <Stack.Screen name="PaidPlanInfo" component={PaidPlanInfoScreen} options={{ title:'' }} />
         <Stack.Screen name="BottomNav" component={BottomNavigator}  options={{headerShown:false}}/>
     </Stack.Navigator>
     )
