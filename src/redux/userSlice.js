@@ -40,7 +40,7 @@ export const checkHasToken = createAsyncThunk('user/checkHasToken', async () => 
 
 
 
-export const counterSlice = createSlice({
+export const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
@@ -84,8 +84,8 @@ export const counterSlice = createSlice({
 
 
 
-export const { reset } = counterSlice.actions
+export const { reset } = userSlice.actions
 
-export default counterSlice.reducer
+export default userSlice.reducer
 
 

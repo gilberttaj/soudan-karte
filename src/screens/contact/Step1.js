@@ -1,12 +1,23 @@
 import { View, Text, Image,TouchableOpacity, ScrollView } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { imageUrl } from '../../../assets/Icons';
+import { useDispatch, useSelector } from 'react-redux';
+import { setCategoryName } from '../../redux/consultationSlice';
+
 
 
 
 const Step1 = () => {
 
-  const [index, setIndex] = useState(null);
+  const categoryName = useSelector(state => state.consultation?.categoryName)
+
+  const dispatch = useDispatch();
+
+  const [index, setIndex] = useState(categoryName);
+
+  useEffect(() => {
+    dispatch(setCategoryName(index));
+  }, [index])
 
   const handleOption1 = () => { 
     setIndex(0);
@@ -91,11 +102,6 @@ const Step1 = () => {
   const handleOption21 = () => {
     setIndex(20);
   }
-
-
-
-
-  console.log(index);
 
 
   return (

@@ -63,6 +63,11 @@ const Index = () => {
   const handleShowPaidPlans = () => {
     navigation.navigate('PaidPlans');
   }
+  
+  const handleShowUserSupport= () => {
+    navigation.navigate('UserSupport');
+  }
+
 
 
   const handleLogout = () => {
@@ -240,6 +245,12 @@ for Android ${android}`
         </TouchableOpacity>
         <TouchableOpacity className='bg-white flex-row border-b border-gray-300 mb-0.5' onPress={handleShowPolicy}>
           <Text className='py-3 pl-3 flex-1'>プライバシーポリシー</Text>
+          <View className='self-center pr-2'>
+            <Ionicons  name='chevron-forward-outline' size={15} color='silver'/>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity className='bg-white flex-row border-b border-gray-300 mb-0.5' onPress={handleShowUserSupport}>
+          <Text className='py-3 pl-3 flex-1'>ユーザーサポート</Text>
           <View className='self-center pr-2'>
             <Ionicons  name='chevron-forward-outline' size={15} color='silver'/>
           </View>

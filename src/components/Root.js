@@ -8,7 +8,7 @@ import ContactScreen from '../screens/contact/Index';
 import MypageScreen from '../screens/mypage/Index';
 import OptionScreen from '../screens/settings/Index';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { createStackNavigator, TransitionPresets, } from '@react-navigation/stack';
+import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import LoginScreen from '../screens/authentication/Login';
 import RegisterScreen from '../screens/authentication/Register';
 import NewsScreeen from '../screens/settings/News';
@@ -31,7 +31,12 @@ import PaidPlanInfoScreen from '../screens/settings/PaidPlanInfo';
 import PaidPlanSignupScreen from '../screens/settings/PaidPlanSignup';
 import ConsultationScreen from '../screens/contact/Consultation';
 import CreditCardInfoScreen from '../screens/settings/CreditCardInfo';
+import UserSupportScreen from '../screens/settings/UserSupport';
 import { imageUrl } from '../../assets/Icons';
+import { HeaderBackButton } from 'react-navigation-stack';
+import { setCategoryName } from '../redux/consultationSlice';
+
+
 
 
 
@@ -112,7 +117,7 @@ const OptionStack = () => {
                 title: 'クレジットカード登録',
                     headerRight: () => (
                     <Text className="text-white mr-2">編集</Text>
-                  ),
+                ),
             }} 
             
         />
@@ -120,6 +125,7 @@ const OptionStack = () => {
         <Stack.Screen name="PaidPlans" component={PaidPlanScreen} options={{ title:'有料プラン' }} />
         <Stack.Screen name="PaidPlanSignup" component={PaidPlanSignupScreen} options={{ title:'有料プラン登録' }} />
         <Stack.Screen name="PaidPlanInfo" component={PaidPlanInfoScreen} options={{ title:'' }} />
+        <Stack.Screen name="UserSupport" component={UserSupportScreen} options={{ title:'ユーザーサポート' }} />
         <Stack.Screen name="BottomNav" component={BottomNavigator}  options={{headerShown:false}}/>
     </Stack.Navigator>
     )
@@ -128,6 +134,14 @@ const OptionStack = () => {
 
 
 const AuthStack = () => {
+
+    const dispatch = useDispatch();
+    const navigation = useNavigation();
+
+    const handleSetCategoryName = () => {
+        dispatch(setCategoryName(null))
+        navigation.goBack();
+    }
 
     return(
     <Stack.Navigator 
@@ -146,7 +160,13 @@ const AuthStack = () => {
         <Stack.Screen name="AuthRegister" component={RegisterScreen}  options={{ title: '会員登録' }} />
         <Stack.Screen name="Forgot" component={ForgotScreen}  options={{ title: 'パスワード再設定' }} />
         <Stack.Screen name="AuthTerms" component={TermsScreen}  options={{ title: 'パスワードをお忘れの方はこちら' }} />
-        <Stack.Screen name="Consultation" component={ConsultationScreen} options={{ title: '相談カルテを作成' }}/>
+        <Stack.Screen name="Consultation" component={ConsultationScreen} options={{ title: '相談カルテを作成',
+            headerLeft: (props) => (
+                <HeaderBackButton
+                    {...props}
+                    onPress={handleSetCategoryName}
+                />
+            ), }}/>
     </Stack.Navigator>
     )
 }

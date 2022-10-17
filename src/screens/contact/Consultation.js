@@ -2,14 +2,21 @@ import { useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import { View, useWindowDimensions, TouchableOpacity, Text, Image } from 'react-native';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
+import { useDispatch, useSelector } from 'react-redux';
+import { setCategoryName } from '../../redux/consultationSlice';
 import Step1 from './Step1';
 import Step2 from './Step2';
 import Step3 from './Step3';
 import Step4 from './Step4';
-import { imageUrl } from '../../../assets/Icons';
+
 
 
 export default function Consultation() {
+
+  const categoryName = useSelector(state => state.consultation?.categoryName)
+  console.log(categoryName);
+
+  const dispatch = useDispatch();
 
   const FirstRoute = () => (
     <Step1/>
@@ -40,11 +47,8 @@ export default function Consultation() {
 
   const navigation = useNavigation();
 
-  const [ nextDisabled , setNextDisabled ] = useState(false);
+  const [ nextDisabled , setNextDisabled ] = useState(true);
   const [ value1, setValue1 ] = useState(null);
-
-
-
 
 
   const [index, setIndex] = useState(0);
@@ -61,6 +65,15 @@ export default function Consultation() {
   const stepImg3 = index == 2? require('../../../assets/img_karte_progress_active.9.png') : require('../../../assets/img_karte_progress_deactive.9.png');
   const stepImg4 = index == 3? require('../../../assets/img_karte_progress_active.9.png') : require('../../../assets/img_karte_progress_deactive.9.png');
 
+  const step2Value = 1;
+  const step3Value = 1;
+
+  useEffect(() => {
+    if(categoryName != null && index == 0){
+      setNextDisabled(false);
+    }
+    }, [categoryName])
+  
 
 
   const renderTabBar = () => {
@@ -117,8 +130,27 @@ export default function Consultation() {
 
   useEffect(() => {
     if(index < 0){
+      dispatch(setCategoryName(null))
       navigation.goBack();
     }
+
+    if(categoryName != null && index == 0){
+      setNextDisabled(false);
+    }
+
+    if(step2Value == null && index == 1){
+      setNextDisabled(true);
+    }
+
+    if(step2Value != null && index == 1){
+      setNextDisabled(false);
+    }
+
+
+    if(step3Value == null && index == 2){
+      setNextDisabled(true);
+    }
+
   },[index])
 
 
@@ -133,11 +165,11 @@ export default function Consultation() {
       renderTabBar={renderTabBar}
     />
       <View className='flex-row justify-center gap-3.5 bg-white pb-2 px-3'>
-        <TouchableOpacity onPress={handleBack} className='flex-1 bg-gray-300 py-1.5' disabled={false}>
+        <TouchableOpacity onPress={handleBack} className='flex-1 py-1.5' style={{ backgroundColor: '#F2F2F2'}} disabled={false}>
           <Text className='text-center'>もどる</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={handleNext} className='flex-1 bg-violet-300 py-1.5' disabled={nextDisabled}>
-          <Text className='text-center'>つぎへ</Text>
+        <TouchableOpacity onPress={handleNext} className='flex-1 py-1.5' style={{ backgroundColor: `${nextDisabled ? '#837D93' : '#17AAB1'}`}} disabled={nextDisabled}>
+          <Text className='text-center text-white'>つぎへ</Text>
         </TouchableOpacity>
       </View>
 
