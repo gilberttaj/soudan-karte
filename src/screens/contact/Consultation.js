@@ -122,7 +122,6 @@ export default function Consultation() {
   },[index])
 
 
-  // console.log(index);
   return (
     <>
     <TabView
@@ -133,14 +132,14 @@ export default function Consultation() {
       swipeEnabled={false}
       renderTabBar={renderTabBar}
     />
-    <View className='flex-row justify-center gap-3'>
-      <TouchableOpacity onPress={handleBack} className='flex-1 bg-gray-300' disabled={false}>
-        <Text className='text-center'>Back</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={handleNext} className='flex-1 bg-violet-300' disabled={nextDisabled}>
-        <Text className='text-center'>Next</Text>
-      </TouchableOpacity>
-    </View>
+      <View className='flex-row justify-center gap-3.5 bg-white pb-2 px-3'>
+        <TouchableOpacity onPress={handleBack} className='flex-1 bg-gray-300 py-1.5' disabled={false}>
+          <Text className='text-center'>もどる</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={handleNext} className='flex-1 bg-violet-300 py-1.5' disabled={nextDisabled}>
+          <Text className='text-center'>つぎへ</Text>
+        </TouchableOpacity>
+      </View>
 
     </>
   );
