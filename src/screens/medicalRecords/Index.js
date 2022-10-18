@@ -35,6 +35,7 @@ const Index = () => {
 
   const handleCloseModal = () => {
     setIsVisible(false);
+    setIsModal(false);
   }
 
   const handleShowLogin = () => {
@@ -54,7 +55,14 @@ const Index = () => {
       navigation.navigate('Consultation');
     }
   }
-
+  
+  
+  const handleShowModal = () => {
+    setIsModal(true);
+  }
+  
+  const [ isModal, setIsModal ] = useState(false);
+  
   return (
     <>
       <View className="w-11/12 " style={styles.mrContainer}>
@@ -75,7 +83,7 @@ const Index = () => {
         </View>
         
         <View className='flex-row self-center items-center mt-4'>
-          <TouchableOpacity className='py-2 w-full bg-primary rounded'>
+          <TouchableOpacity className='py-2 w-full bg-primary rounded' onPress={handleShowModal}>
               <Text className='text-white text-center'>専門家IDを指定する</Text>
           </TouchableOpacity>
         </View>
@@ -107,7 +115,7 @@ const Index = () => {
         </View>
 
         <View className='bg-white justify-center items-center flex-1 relative'>
-            <Modal isVisible={isVisible}  onDismiss={handleCloseModal}>
+            <Modal isModal={isVisible}  onDismiss={handleCloseModal}>
               <View className='items-center flex-row bg-neutral-100 py-3 justify-center'>
                 <TouchableOpacity className='pl-3 ml-auto absolute left-0' onPress={handleCloseModal}>
                   <Ionicons name='close-outline' size={35} color='gray'/>
@@ -144,6 +152,20 @@ const Index = () => {
           </Modal>
       </View>
       </View>
+      
+      <Modal isVisible={isModal}  onDismiss={handleCloseModal}>
+        <View className='bg-white p-5'>
+          <View className="">
+            <Text className="text-lg">入力したIDの専門家は見つかりませ んでした。</Text>
+            <Text className="text-lg mt-2">IDをお確かめの上、再度入力くださ い。</Text>
+          </View>
+          <View className="flex-row justify-end mt-6">
+            <TouchableOpacity onPress={handleCloseModal}>
+              <Text className="text-base text-primary">OK</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </>
   )
 }
