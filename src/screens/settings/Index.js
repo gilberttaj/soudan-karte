@@ -1,11 +1,18 @@
-import { View, Text, TouchableOpacity, Share, Platform, ScrollView, Switch } from 'react-native'
+import { 
+  View, 
+  Text, 
+  TouchableOpacity, 
+  Share, 
+  Platform, 
+  ScrollView, 
+  Switch 
+} from 'react-native'
 import React, { useState, useEffect } from 'react'
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import { logout } from '../../redux/userSlice';
 import { useSelector, useDispatch } from 'react-redux';
-
-
+import Modal from "react-native-modal";
 
 
 const Index = () => {
@@ -75,8 +82,16 @@ const Index = () => {
     navigation.navigate('MypageAuth' , { screen: 'Contact' });
   }
 
-
-
+  const handleCloseModal = () => {
+    setIsVisible(false);
+  }
+  
+  const handleShowModal = () => {
+    setIsVisible(true);
+  }
+  
+  const [ isVisible, setIsVisible ] = useState(false);
+  
   const [isEnabled, setIsEnabled] = useState(true);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
@@ -276,7 +291,7 @@ for Android ${android}`
           <Text className='py-2.5 pl-3'></Text>
         </View>
 
-        <TouchableOpacity className='bg-white flex-row border-b border-gray-300 mb-1'>
+        <TouchableOpacity className='bg-white flex-row border-b border-gray-300 mb-1' onPress={handleShowModal}>
           <Text className='py-3 pl-3 flex-1'>相談カルテを削除する</Text>
           <View className='self-center pr-2'>
             <Ionicons  name='chevron-forward-outline' size={15} color='silver'/>
@@ -285,6 +300,23 @@ for Android ${android}`
       </ScrollView>
       )
     }
+     
+        <Modal isVisible={isVisible}  onDismiss={handleCloseModal}>
+          <View className='bg-white p-5'>
+            <View className="">
+              <Text className="text-lg">本当に相談カルテを削除します か?</Text>
+              <Text className="text-lg mt-2">これまでのトーク履歴が消えてしま いますのでご注意ください。</Text>
+            </View>
+            <View className="flex-row justify-between mt-6">
+              <TouchableOpacity onPress={handleCloseModal}>
+                <Text className="text-base text-primary">キャンセル</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={handleCloseModal}>
+                <Text className="text-base text-primary">削除</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
     </>
   )
 }
