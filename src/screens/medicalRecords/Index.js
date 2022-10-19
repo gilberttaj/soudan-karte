@@ -4,15 +4,14 @@ import {
   StyleSheet, 
   TextInput, 
   KeyboardAvoidingView, 
+  Linking,
+  Platform,
   TouchableOpacity } from 'react-native'
 import Ionicons from '@expo/vector-icons/Ionicons';
 import React, { useEffect, useLayoutEffect, useState } from 'react'
 import Modal from "react-native-modal";
 import { useSelector } from 'react-redux';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
-
-
-
 
 
 const Index = () => {
@@ -36,6 +35,7 @@ const Index = () => {
   const handleCloseModal = () => {
     setIsVisible(false);
     setIsModal(false);
+    setIsModalNumber(false);
   }
 
   const handleShowLogin = () => {
@@ -62,6 +62,24 @@ const Index = () => {
   }
   
   const [ isModal, setIsModal ] = useState(false);
+  
+  const [isModalNumber, setIsModalNumber] = useState(false);
+  
+  const handleShowModalNumber = () => {
+    setIsModalNumber(true);
+  }
+  
+  const onPressMobileNumberClick = (number) => {
+
+    let phoneNumber = '';
+    if (Platform.OS === 'android') {
+      phoneNumber = `tel:${number}`;
+    } else {
+      phoneNumber = `telprompt:${number}`;
+    }
+
+    Linking.openURL(phoneNumber);
+ }
   
   return (
     <>
@@ -102,9 +120,11 @@ const Index = () => {
             </Text>
           </View>
           <View className="my-5">
-            <Text className="text-primary text-center underline">
-              0120-542-063（相談サポートセンター）
-            </Text>
+            <TouchableOpacity onPress={handleShowModalNumber}>
+              <Text className="text-primary text-center underline">
+                0120-542-063（相談サポートセンター）
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
         
@@ -162,6 +182,23 @@ const Index = () => {
           <View className="flex-row justify-end mt-6">
             <TouchableOpacity onPress={handleCloseModal}>
               <Text className="text-base text-primary">OK</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+      
+       <Modal isVisible={isModalNumber}  onDismiss={handleCloseModal}>
+        <View className='bg-white p-5'>
+          <View className="">
+            <Text className="text-xl font-bold">0120542063</Text>
+            <Text className="text-lg mt-2">発信すると通話アプリが起動します</Text>
+          </View>
+          <View className="flex-row justify-end mt-6">
+            <TouchableOpacity onPress={handleCloseModal}>
+              <Text className="text-base mr-8 text-primary">キャンセル</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => { onPressMobileNumberClick("0120542063") }}>
+              <Text className="text-base text-primary">発信</Text>
             </TouchableOpacity>
           </View>
         </View>
