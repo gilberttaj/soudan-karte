@@ -1,10 +1,10 @@
-import { View, Text, TextInput, ScrollView, KeyboardAvoidingView,Platform, Pressable, Image } from 'react-native'
+import { View, Text, TextInput, ScrollView, KeyboardAvoidingView,Platform, Pressable, Image, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import SelectDropdown from 'react-native-select-dropdown';
 import { useHeaderHeight } from '@react-navigation/elements';
 import * as ImagePicker from 'expo-image-picker';
 import { useDispatch, useSelector } from 'react-redux';
-import { setStep3Detail } from '../../redux/consultationSlice';
+import { decrementIndex, incrementIndex, setStep3Detail } from '../../redux/consultationSlice';
 import { setSituation, setConsultationType, setRelationshipDuration, setDetail, setCat1Image } from '../../redux/category1Slice';
 
 // import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -43,6 +43,7 @@ const category1 = () => {
   const relationshipDuration = useSelector(state => state.category1?.relationshipDuration)
   const consultationType = useSelector(state => state.category1?.consultationType)
   const detail = useSelector(state => state.category1?.detail)
+  const index = useSelector(state => state.consultation?.index)
   const step3Detail = useSelector(state => state.consultation?.step3Detail)
   
   const selectedSituation = situation ? situation : '未婚'; 
@@ -61,6 +62,8 @@ const category1 = () => {
   const [relationshipDurationDefaultValue, setRelationshipDurationDefaultValue] = useState(selectedRelationshipDuration);
 
   const [consultationTypeDefaultValue, setConsultationTypeDefaultValue] = useState(selectedConsultationType);
+
+  const [ isEnabled, setIsEnabled ] = useState(true);
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -90,10 +93,20 @@ const category1 = () => {
 
   useEffect(() =>{
     if(detailInput.length > 0){
-      dispatch(setStep3Detail(true))
+      // dispatch(setStep3Detail(true))
+      setIsEnabled(false);
     }
 
   },[detailInput])
+
+  const handleNext = () => {
+    // alert('test');
+    dispatch(incrementIndex());
+  }
+
+  const handleBack = () => {
+    dispatch(decrementIndex());
+  }
 
 
 
@@ -190,6 +203,8 @@ const category1 = () => {
 
         </View>
 
+
+
         <View className='bg-white pb-8'>
           <View className='mx-5 pt-4'>
             <TextInput style={{height:140, textAlignVertical:'top', fontSize:15 ,borderBottomWidth: 1, borderBottomColor: '#7E7E7E'}} placeholder={'ご相談内容を端的にご記入ください。(いつどこで 誰が誰に何をするのか、どうしたいのかを意識し てご記入いただけますとより具体的な回答が期待 できます。)'}
@@ -203,7 +218,6 @@ const category1 = () => {
                 画像を一緒に送る
               </Text>
             </Pressable>
-            
           </View>
 
           <View className='ml-8 mt-2'>
@@ -211,7 +225,16 @@ const category1 = () => {
           </View>
         </View>       
       </ScrollView>
+      
 
+      <View className='flex-row justify-center gap-3.5 bg-white pb-2 px-3'>
+        <TouchableOpacity onPress={handleBack} className='flex-1 py-1.5' style={{ backgroundColor: '#F2F2F2'}} disabled={false}>
+          <Text className='text-center'>もどる</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={handleNext} className='flex-1 py-1.5' style={{ backgroundColor: `${isEnabled ? '#837D93' : '#17AAB1'}`}} disabled={isEnabled}>
+          <Text className='text-center text-white'>つぎへ</Text>
+        </TouchableOpacity>
+      </View>
     </KeyboardAvoidingView>
   )
 }

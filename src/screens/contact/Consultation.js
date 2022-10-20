@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { View, useWindowDimensions, TouchableOpacity, Text, Image } from 'react-native';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCategoryName } from '../../redux/consultationSlice';
+import { incrementIndex,decrementIndex, setCategoryName, resetIndex } from '../../redux/consultationSlice';
 import Step1 from './Step1';
 import Step2 from './Step2';
 import Step3 from './Step3';
@@ -15,7 +15,7 @@ export default function Consultation() {
 
   const [ nextDisabled , setNextDisabled ] = useState(true);
 
-
+  const index = useSelector(state => state.consultation?.index)
   const categoryName = useSelector(state => state.consultation?.categoryName)
   const step3Detail = useSelector(state => state.consultation?.step3Detail)
   // console.log(categoryName);
@@ -55,7 +55,7 @@ export default function Consultation() {
   const [ value1, setValue1 ] = useState(null);
 
 
-  const [index, setIndex] = useState(0);
+  // const [index, setIndex] = useState(0);
   const [routes] = useState([
     { key: 'first', title: 'STEP 1' },
     { key: 'second', title: 'STEP 2' },
@@ -69,8 +69,6 @@ export default function Consultation() {
   const stepImg3 = index == 2? require('../../../assets/img_karte_progress_active.9.png') : require('../../../assets/img_karte_progress_deactive.9.png');
   const stepImg4 = index == 3? require('../../../assets/img_karte_progress_active.9.png') : require('../../../assets/img_karte_progress_deactive.9.png');
 
-  const step2Value = 1;
-  const step3Value = 1;
 
   useEffect(() => {
     if(categoryName != null && index == 0){
@@ -120,21 +118,24 @@ export default function Consultation() {
 
   const handleNext = () => {
     if(index != 3){
-    setIndex(prevState => prevState+1)
+    // setIndex(prevState => prevState+1)
     }
+
+    dispatch(incrementIndex());
   }
 
   const handleBack = () => {
-    setIndex(prevState => prevState-1)
+    dispatch(decrementIndex());
   }
 
   useEffect(() => {
-    setIndex(0);
+    // setIndex(0);
   },[])
 
   useEffect(() => {
     if(index < 0){
       dispatch(setCategoryName(null))
+      dispatch(resetIndex())
       navigation.goBack();
     }
 
@@ -142,17 +143,17 @@ export default function Consultation() {
       setNextDisabled(false);
     }
 
-    if(step3Detail == false && index == 2){
-      setNextDisabled(true);
-    }
+    // if(step3Detail == false && index == 2){
+    //   setNextDisabled(true);
+    // }
 
   },[index])
 
-  useEffect(()=>{
-    if(step3Detail == true  && index == 2){
-      setNextDisabled(false);
-    }
-  },[step3Detail ])
+  // useEffect(()=>{
+  //   if(step3Detail == true  && index == 2){
+  //     setNextDisabled(false);
+  //   }
+  // },[step3Detail ])
 
 
 
@@ -167,6 +168,7 @@ export default function Consultation() {
       swipeEnabled={false}
       renderTabBar={renderTabBar}
     />
+    { index != 2 &&
       <View className='flex-row justify-center gap-3.5 bg-white pb-2 px-3'>
         <TouchableOpacity onPress={handleBack} className='flex-1 py-1.5' style={{ backgroundColor: '#F2F2F2'}} disabled={false}>
           <Text className='text-center'>もどる</Text>
@@ -175,7 +177,7 @@ export default function Consultation() {
           <Text className='text-center text-white'>つぎへ</Text>
         </TouchableOpacity>
       </View>
-
+    }
     </>
   );
 }

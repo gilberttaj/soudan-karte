@@ -34,7 +34,7 @@ import CreditCardInfoScreen from '../screens/settings/CreditCardInfo';
 import UserSupportScreen from '../screens/settings/UserSupport';
 import { imageUrl } from '../../assets/Icons';
 import { HeaderBackButton } from 'react-navigation-stack';
-import { setCategoryName } from '../redux/consultationSlice';
+import { resetIndex, setCategoryName } from '../redux/consultationSlice';
 
 
 
@@ -139,6 +139,7 @@ const AuthStack = () => {
     const navigation = useNavigation();
 
     const handleSetCategoryName = () => {
+        dispatch(resetIndex())
         dispatch(setCategoryName(null))
         navigation.goBack();
     }

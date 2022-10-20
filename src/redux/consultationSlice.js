@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 const initialState = {
+    index: 0,
 	categoryName: null,
     prefecture: null,
     age:null,
@@ -12,6 +13,12 @@ export const consultationSlice = createSlice({
     name: 'consultation',
     initialState,
     reducers: {
+        incrementIndex: (state, action) => {
+            state.index = state.index+1
+        },  
+        decrementIndex: (state, action) => {
+            state.index = state.index-1
+        },  
         setCategoryName: (state, action) => {
             state.categoryName = action.payload
         },  
@@ -27,10 +34,14 @@ export const consultationSlice = createSlice({
         setStep3Detail: (state, action) => {
             state.step3Detail = action.payload
         },
+        resetIndex: (state, action) => {
+            state.index = 0
+        },
+        
 
     },
 })
 
-export const { setCategoryName, setPrefecture, setAge, setGender, setStep3Detail } = consultationSlice.actions
+export const { incrementIndex,decrementIndex, setCategoryName, setPrefecture, setAge, setGender, setStep3Detail, resetIndex } = consultationSlice.actions
 
 export default consultationSlice.reducer
