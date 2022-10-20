@@ -7,6 +7,7 @@ const initialState = {
     age:null,
     gender:null,
     step3Detail:false,
+    detail:'',
 }
 
 export const consultationSlice = createSlice({
@@ -37,11 +38,14 @@ export const consultationSlice = createSlice({
         resetIndex: (state, action) => {
             state.index = 0
         },
+        setDetail: (state, action) => {
+            state.detail = action.payload
+        }
         
 
     },
 })
 
-export const { incrementIndex,decrementIndex, setCategoryName, setPrefecture, setAge, setGender, setStep3Detail, resetIndex } = consultationSlice.actions
+export const { incrementIndex,decrementIndex, setCategoryName, setPrefecture, setAge, setGender, setStep3Detail, resetIndex, setDetail } = consultationSlice.actions
 
 export default consultationSlice.reducer

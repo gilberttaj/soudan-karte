@@ -118,19 +118,16 @@ export default function Consultation() {
 
   const handleNext = () => {
     if(index != 3){
-    // setIndex(prevState => prevState+1)
+      dispatch(incrementIndex());
     }
 
-    dispatch(incrementIndex());
+    
   }
 
   const handleBack = () => {
     dispatch(decrementIndex());
   }
 
-  useEffect(() => {
-    // setIndex(0);
-  },[])
 
   useEffect(() => {
     if(index < 0){
@@ -143,18 +140,8 @@ export default function Consultation() {
       setNextDisabled(false);
     }
 
-    // if(step3Detail == false && index == 2){
-    //   setNextDisabled(true);
-    // }
 
   },[index])
-
-  // useEffect(()=>{
-  //   if(step3Detail == true  && index == 2){
-  //     setNextDisabled(false);
-  //   }
-  // },[step3Detail ])
-
 
 
 
@@ -163,7 +150,7 @@ export default function Consultation() {
     <TabView
       navigationState={{ index, routes }}
       renderScene={renderScene}
-      // onIndexChange={1}
+      onIndexChange={index}
       initialLayout={{ width: layout.width }}
       swipeEnabled={false}
       renderTabBar={renderTabBar}

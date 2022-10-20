@@ -4,8 +4,8 @@ import SelectDropdown from 'react-native-select-dropdown';
 import { useHeaderHeight } from '@react-navigation/elements';
 import * as ImagePicker from 'expo-image-picker';
 import { useDispatch, useSelector } from 'react-redux';
-import { decrementIndex, incrementIndex, setStep3Detail } from '../../redux/consultationSlice';
-import { setSituation, setConsultationType, setRelationshipDuration, setDetail, setCat1Image } from '../../redux/category1Slice';
+import { decrementIndex, incrementIndex, setDetail,setStep3Detail } from '../../redux/consultationSlice';
+import { setSituation, setConsultationType, setRelationshipDuration, setCat1Image } from '../../redux/category1Slice';
 
 // import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
@@ -42,26 +42,27 @@ const category1 = () => {
   const situation = useSelector(state => state.category1?.situation)
   const relationshipDuration = useSelector(state => state.category1?.relationshipDuration)
   const consultationType = useSelector(state => state.category1?.consultationType)
-  const detail = useSelector(state => state.category1?.detail)
+  const detail = useSelector(state => state.consultation?.detail)
   const index = useSelector(state => state.consultation?.index)
   const step3Detail = useSelector(state => state.consultation?.step3Detail)
   
   const selectedSituation = situation ? situation : '未婚'; 
   const selectedRelationshipDuration = relationshipDuration ? relationshipDuration : '2年未滿';
   const selectedConsultationType = consultationType ? consultationType : 'その他'
+  const inputtedDetail = detail ? detail : '';
 
-
-  const inputItem = step3Detail ? step3Detail : '';
 
   const headerHeight = useHeaderHeight();
   const [image, setImage] = useState(null);
-  const [detailInput , setDetailInput] = useState(inputItem);
+  const [detailInput , setDetailInput] = useState('');
 
   const [ situationDefaultValue , setSituationDefaultValue ] = useState(selectedSituation);
 
   const [relationshipDurationDefaultValue, setRelationshipDurationDefaultValue] = useState(selectedRelationshipDuration);
 
   const [consultationTypeDefaultValue, setConsultationTypeDefaultValue] = useState(selectedConsultationType);
+
+  const [ inputtedDefaultValue, setInputtedDefaultValue ] = useState(inputtedDetail);
 
   const [ isEnabled, setIsEnabled ] = useState(true);
 
@@ -92,16 +93,22 @@ const category1 = () => {
 
 
   useEffect(() =>{
-    if(detailInput.length > 0){
-      // dispatch(setStep3Detail(true))
+    if(detailInput != ''){
       setIsEnabled(false);
     }
 
   },[detailInput])
 
+  useEffect(() => {
+    if(detail != ''){
+      setIsEnabled(false);
+    }
+  },[index])
+
+
   const handleNext = () => {
-    // alert('test');
     dispatch(incrementIndex());
+    dispatch(setDetail(detailInput));
   }
 
   const handleBack = () => {
@@ -120,7 +127,7 @@ const category1 = () => {
         <Text className='pl-5 py-2.5 text-lg text-neutral-600 font-semibold'>困っていることを詳しく教えてください</Text>
       </View>
 
-      <ScrollView className='mb-4'>
+      <ScrollView className=''>
         <View className='bg-white pb-5 mb-0.5'>
           <View>
             <Text className='mt-5 pl-5 font-semibold text-xs'>
@@ -205,10 +212,10 @@ const category1 = () => {
 
 
 
-        <View className='bg-white pb-8'>
+        <View className='bg-white pb-8 mb-3'>
           <View className='mx-5 pt-4'>
             <TextInput style={{height:140, textAlignVertical:'top', fontSize:15 ,borderBottomWidth: 1, borderBottomColor: '#7E7E7E'}} placeholder={'ご相談内容を端的にご記入ください。(いつどこで 誰が誰に何をするのか、どうしたいのかを意識し てご記入いただけますとより具体的な回答が期待 できます。)'}
-            multiline={true} onChangeText={updateInputValueHandler.bind(this, 'detailInput')} />
+            multiline={true} onChangeText={updateInputValueHandler.bind(this, 'detailInput')}  defaultValue={inputtedDefaultValue}/>
           </View>
           <View className='mt-6 flex-row justify-center'>
             <Pressable className='w-10/12 rounded-sm flex-row justify-center gap-2' style={{ backgroundColor: '#EEEEEE' }}
