@@ -7,6 +7,7 @@ const initialState = {
     detail:null,
     cat1Image:null,
     isEnabled:false,
+    householdAnnual:null
 }
 
 export const category1Slice = createSlice({
@@ -32,11 +33,23 @@ export const category1Slice = createSlice({
             if(state.detail != null){
                 state.isEnabled = true;
             }
+        },
+        setHouseholdAnnual: (state, action) => {
+            state.householdAnnual = action.payload
+        },
+        setMap: (state, action) => {
+            state.map = action.payload
+        },
+        setChildren: (state, action) => {
+            state.child = action.payload
+        },
+        setEssentials: (state, action) => {
+            state.essential = action.payload
         }
     },
 })
 
 export const { setCategoryName, setSituation, 
-    setRelationshipDuration, setConsultationType, setDetail, setCat1Image } = category1Slice.actions
+    setRelationshipDuration, setConsultationType, setDetail, setMap, setChildren, setEssentials, setCat1Image, setHouseholdAnnual } = category1Slice.actions
 
 export default category1Slice.reducer
