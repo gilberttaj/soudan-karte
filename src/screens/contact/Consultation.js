@@ -13,8 +13,12 @@ import Step4 from './Step4';
 
 export default function Consultation() {
 
+  const [ nextDisabled , setNextDisabled ] = useState(true);
+
+
   const categoryName = useSelector(state => state.consultation?.categoryName)
-  console.log(categoryName);
+  const step3Detail = useSelector(state => state.consultation?.step3Detail)
+  // console.log(categoryName);
 
   const dispatch = useDispatch();
 
@@ -47,7 +51,7 @@ export default function Consultation() {
 
   const navigation = useNavigation();
 
-  const [ nextDisabled , setNextDisabled ] = useState(true);
+ 
   const [ value1, setValue1 ] = useState(null);
 
 
@@ -138,20 +142,19 @@ export default function Consultation() {
       setNextDisabled(false);
     }
 
-    if(step2Value == null && index == 1){
-      setNextDisabled(true);
-    }
-
-    if(step2Value != null && index == 1){
-      setNextDisabled(false);
-    }
-
-
-    if(step3Value == null && index == 2){
+    if(step3Detail == false && index == 2){
       setNextDisabled(true);
     }
 
   },[index])
+
+  useEffect(()=>{
+    if(step3Detail == true  && index == 2){
+      setNextDisabled(false);
+    }
+  },[step3Detail ])
+
+
 
 
   return (
@@ -159,7 +162,7 @@ export default function Consultation() {
     <TabView
       navigationState={{ index, routes }}
       renderScene={renderScene}
-      onIndexChange={setIndex}
+      // onIndexChange={1}
       initialLayout={{ width: layout.width }}
       swipeEnabled={false}
       renderTabBar={renderTabBar}
