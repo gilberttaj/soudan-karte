@@ -62,10 +62,10 @@ const prefectures = [
 const data = [
   {
     label: '男性'
-   },
-   {
+  },
+  {
     label: '女性'
-   }
+  }
   ];
 
   let ages = [];
@@ -100,10 +100,11 @@ const Step2 = () => {
 
   const [ageDefaultValue, setAgeDefaultValue] = useState(selectedAge);
 
-  const [genderDefaultValue, setGenderDefaultValue] = useState(selectedGender);
+  const [genderDefaultValue, setGenderDefaultValue] = useState(gender == '男性' ? 1 : 2);
 
   const onSelectGender = (e) => {
-    dispatch(setGender(data.indexOf(e) + 1));
+    // dispatch(setGender(data.indexOf(e) + 1));
+    dispatch(setGender(e.label));
   }
 
   // console.log(gender);

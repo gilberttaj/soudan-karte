@@ -1,9 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 const initialState = {
-    situation:null,
-    relationshipDuration:null,
-    consultationType:null,
+    situation:'未婚',
+    relationshipDuration:'2年未滿',
+    consultationType:'浮気調查',
     detail:null,
     cat1Image:null,
     isEnabled:false,

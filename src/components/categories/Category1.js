@@ -4,7 +4,7 @@ import SelectDropdown from 'react-native-select-dropdown';
 import { useHeaderHeight } from '@react-navigation/elements';
 import * as ImagePicker from 'expo-image-picker';
 import { useDispatch, useSelector } from 'react-redux';
-import { decrementIndex, incrementIndex, setDetail,setStep3Detail } from '../../redux/consultationSlice';
+import { decrementIndex, incrementIndex, setDetail, setImage } from '../../redux/consultationSlice';
 import { setSituation, setConsultationType, setRelationshipDuration, setCat1Image } from '../../redux/category1Slice';
 
 // import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -44,7 +44,7 @@ const category1 = () => {
   const consultationType = useSelector(state => state.category1?.consultationType)
   const detail = useSelector(state => state.consultation?.detail)
   const index = useSelector(state => state.consultation?.index)
-  const step3Detail = useSelector(state => state.consultation?.step3Detail)
+  const isEnabled = useSelector(state => state.consultation?.isEnabled)
   
   const selectedSituation = situation ? situation : '未婚'; 
   const selectedRelationshipDuration = relationshipDuration ? relationshipDuration : '2年未滿';
@@ -64,18 +64,21 @@ const category1 = () => {
 
   const [ inputtedDefaultValue, setInputtedDefaultValue ] = useState(inputtedDetail);
 
-  const [ isEnabled, setIsEnabled ] = useState(true);
+  const [ isDisabled, setIsDisabled ] = useState(true);
 
+  console.log(isEnabled);
+
+  let result
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
-    let result = await ImagePicker.launchImageLibraryAsync({
+      result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
     });
 
-    // console.log(result);
+    console.log('result',result);
 
     if (!result.cancelled) {
       setImage(result.uri);
@@ -83,37 +86,33 @@ const category1 = () => {
     }
   };
 
-  function updateInputValueHandler(inputType, enteredValue) {
-    switch (inputType) {
-        case 'detailInput':
-            setDetailInput(enteredValue);
-                break;
-    } 
-  }
-
-
   useEffect(() =>{
     if(detailInput != ''){
-      setIsEnabled(false);
+      setIsDisabled(false);
     }
 
   },[detailInput])
 
   useEffect(() => {
-    if(detail != ''){
-      setIsEnabled(false);
+    if(isEnabled){
+      setIsDisabled(false);
     }
-  },[index])
+  },[index, isEnabled])
 
 
   const handleNext = () => {
     dispatch(incrementIndex());
-    dispatch(setDetail(detailInput));
+    dispatch(setDetail(detailInput))
   }
 
   const handleBack = () => {
     dispatch(decrementIndex());
   }
+
+  const handleChangeText = (text) => {
+    setDetailInput(text);
+  }
+
 
 
 
@@ -215,7 +214,8 @@ const category1 = () => {
         <View className='bg-white pb-8 mb-3'>
           <View className='mx-5 pt-4'>
             <TextInput style={{height:140, textAlignVertical:'top', fontSize:15 ,borderBottomWidth: 1, borderBottomColor: '#7E7E7E'}} placeholder={'ご相談内容を端的にご記入ください。(いつどこで 誰が誰に何をするのか、どうしたいのかを意識し てご記入いただけますとより具体的な回答が期待 できます。)'}
-            multiline={true} onChangeText={updateInputValueHandler.bind(this, 'detailInput')}  defaultValue={inputtedDefaultValue}/>
+            multiline={true} onChangeText={handleChangeText}  defaultValue={inputtedDefaultValue}
+            keyboardType="phone-pad"/>
           </View>
           <View className='mt-6 flex-row justify-center'>
             <Pressable className='w-10/12 rounded-sm flex-row justify-center gap-2' style={{ backgroundColor: '#EEEEEE' }}
@@ -238,7 +238,7 @@ const category1 = () => {
         <TouchableOpacity onPress={handleBack} className='flex-1 py-1.5' style={{ backgroundColor: '#F2F2F2'}} disabled={false}>
           <Text className='text-center'>もどる</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={handleNext} className='flex-1 py-1.5' style={{ backgroundColor: `${isEnabled ? '#837D93' : '#17AAB1'}`}} disabled={isEnabled}>
+        <TouchableOpacity onPress={handleNext} className='flex-1 py-1.5' style={{ backgroundColor: `${isDisabled ? '#837D93' : '#17AAB1'}`}} disabled={isDisabled}>
           <Text className='text-center text-white'>つぎへ</Text>
         </TouchableOpacity>
       </View>

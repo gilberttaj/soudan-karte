@@ -6,7 +6,8 @@ import {
   KeyboardAvoidingView,
   Platform, 
   Pressable, 
-  Image
+  Image,
+  TouchableOpacity
 } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import SelectDropdown from 'react-native-select-dropdown';
@@ -27,6 +28,7 @@ import {
   setChildSupport
 } from '../../redux/category2Slice';
 import RadioButtonRN from 'radio-buttons-react-native';
+import { incrementIndex, decrementIndex } from '../../redux/consultationSlice';
 
 const Category2 = () => {
   const situations = [
@@ -136,6 +138,7 @@ const Category2 = () => {
   const [civilStatusDefaultValue, setCivilStatusDefaultValue] = useState(selectedCivilStatus)
   const [haveRealEstateDefaultValue, setHaveRealEstateDefaultValue] = useState(selectedHaveRealEstate)
   const [childSupportDefaultValue, setChildSupportDefaultValue] = useState(selectedChildSupport)
+  const [ isDisabled, setIsDisabled ] = useState(true);
   const onSelectCivilStatus = (e) => {
     dispatch(setCivilStatus(data1.indexOf(e) + 1));
   }
@@ -184,6 +187,18 @@ const Category2 = () => {
     realEstate,
     childSupport
   ])
+
+  const handleNext = () => {
+    dispatch(incrementIndex());
+    // dispatch(setDetail(detailInput))
+  }
+
+  const handleBack = () => {
+    dispatch(decrementIndex());
+  }
+
+
+
   return (
     <KeyboardAvoidingView
     keyboardVerticalOffset={headerHeight}
@@ -424,6 +439,15 @@ const Category2 = () => {
           </View>
         </View>       
       </ScrollView>
+
+      {/* <View className='flex-row justify-center gap-3.5 bg-white pb-2 px-3'>
+        <TouchableOpacity onPress={handleBack} className='flex-1 py-1.5' style={{ backgroundColor: '#F2F2F2'}} disabled={false}>
+          <Text className='text-center'>もどる</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={handleNext} className='flex-1 py-1.5' style={{ backgroundColor: `${isDisabled ? '#837D93' : '#17AAB1'}`}} disabled={isDisabled}>
+          <Text className='text-center text-white'>つぎへ</Text>
+        </TouchableOpacity>
+      </View> */}
 
     </KeyboardAvoidingView>
   )

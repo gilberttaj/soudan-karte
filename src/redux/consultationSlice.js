@@ -3,11 +3,13 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 const initialState = {
     index: 0,
 	categoryName: null,
-    prefecture: null,
-    age:null,
-    gender:null,
+    prefecture: '北海道',
+    age:'18歳以下',
+    gender: '男性',
     step3Detail:false,
     detail:'',
+    isEnabled: false,
+    image: null,
 }
 
 export const consultationSlice = createSlice({
@@ -40,12 +42,16 @@ export const consultationSlice = createSlice({
         },
         setDetail: (state, action) => {
             state.detail = action.payload
-        }
-        
-
+        },
+        setIsEnabled: (state, action) => {
+            state.isEnabled = action.payload
+        },
+        setImage: (state, action) => {
+            state.image = action.payload
+        }   
     },
 })
 
-export const { incrementIndex,decrementIndex, setCategoryName, setPrefecture, setAge, setGender, setStep3Detail, resetIndex, setDetail } = consultationSlice.actions
+export const { incrementIndex,decrementIndex, setCategoryName, setPrefecture, setAge, setGender, setStep3Detail, resetIndex, setDetail, setIsEnabled } = consultationSlice.actions
 
 export default consultationSlice.reducer

@@ -145,6 +145,7 @@ export default function Consultation() {
 
 
 
+
   return (
     <>
     <TabView
@@ -155,7 +156,7 @@ export default function Consultation() {
       swipeEnabled={false}
       renderTabBar={renderTabBar}
     />
-    { index != 2 &&
+    { (index < 2 ) &&
       <View className='flex-row justify-center gap-3.5 bg-white pb-2 px-3'>
         <TouchableOpacity onPress={handleBack} className='flex-1 py-1.5' style={{ backgroundColor: '#F2F2F2'}} disabled={false}>
           <Text className='text-center'>もどる</Text>
