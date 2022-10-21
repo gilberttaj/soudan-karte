@@ -1,16 +1,16 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 const initialState = {
-    situation:null,
-    relationshipDuration:null,
+    situation:'未婚',
+    relationshipDuration:'2年未滿',
     consultationType:null,
     detail:null,
     cat1Image:null,
     isEnabled:false,
-    householdAnnual:null,
-    map: null,
-    child: null,
-    essential: null,
+    householdAnnual:'300万円未満',
+    map: '不良行為',
+    child: 'いない',
+    essential: '養育費を取り決めたい',
     civilStatus: null,
     haveRealEstate: null,
     childSupport: null

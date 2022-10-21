@@ -6,14 +6,15 @@ import {
   KeyboardAvoidingView,
   Platform, 
   Pressable, 
-  Image
+  Image,
+  TouchableOpacity
 } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import SelectDropdown from 'react-native-select-dropdown';
 import { useHeaderHeight } from '@react-navigation/elements';
 import * as ImagePicker from 'expo-image-picker';
 import { useDispatch, useSelector } from 'react-redux';
-import { setStep3Detail } from '../../redux/consultationSlice';
+import { decrementIndex, incrementIndex, setDetail,setStep3Detail } from '../../redux/consultationSlice';
 import { 
   setSituation, 
   setHouseholdAnnual, 
@@ -99,7 +100,7 @@ const Category2 = () => {
   const situation = useSelector(state => state.category2?.situation)
   const relationshipDuration = useSelector(state => state.category2?.relationshipDuration)
   const consultationType = useSelector(state => state.category2?.consultationType)
-  const detail = useSelector(state => state.category2?.detail)
+  const detail = useSelector(state => state.consultation?.detail)
   const step3Detail = useSelector(state => state.consultation?.step3Detail)
   const houseHoldAnnual = useSelector(state => state.category2?.householdAnnual)
   const map = useSelector(state => state.category2?.map)
@@ -108,6 +109,8 @@ const Category2 = () => {
   const civilStatus = useSelector(state => state.category2?.civilStatus)
   const realEstate = useSelector(state => state.category2?.haveRealEstate)
   const childSupport = useSelector(state => state.category2?.childSupport)
+  const index = useSelector(state => state.consultation?.index)
+
   
   const selectedSituation = situation ? situation : '未婚'; 
   const selectedRelationshipDuration = relationshipDuration ? relationshipDuration : '2年未滿';
@@ -116,16 +119,18 @@ const Category2 = () => {
   const selectedMap = map ? map : '不良行為'
   const selectedChild = child ? child: 'いない'
   const selectedEssential = essential ? essential : '養育費を取り決めたい'
+  
 
   const inputItem = step3Detail ? step3Detail : '';
   const selectedCivilStatus = civilStatus ? civilStatus : 0;
   const selectedHaveRealEstate = realEstate ? realEstate : 0;
   const selectedChildSupport = childSupport ? childSupport : 0;
-
+  const inputtedDetail = detail ? detail : '';
+  
   const headerHeight = useHeaderHeight();
   
   const [image, setImage] = useState(null);
-  const [detailInput , setDetailInput] = useState(inputItem);
+  const [detailInput , setDetailInput] = useState(inputtedDetail);
   const [ situationDefaultValue , setSituationDefaultValue ] = useState(selectedSituation);
   const [relationshipDurationDefaultValue, setRelationshipDurationDefaultValue] = useState(selectedRelationshipDuration);
   const [consultationTypeDefaultValue, setConsultationTypeDefaultValue] = useState(selectedConsultationType);
@@ -136,6 +141,11 @@ const Category2 = () => {
   const [civilStatusDefaultValue, setCivilStatusDefaultValue] = useState(selectedCivilStatus)
   const [haveRealEstateDefaultValue, setHaveRealEstateDefaultValue] = useState(selectedHaveRealEstate)
   const [childSupportDefaultValue, setChildSupportDefaultValue] = useState(selectedChildSupport)
+  // const [ inputtedDefaultValue, setInputtedDefaultValue ] = useState(inputtedDetail);
+  
+  
+  const [ isEnabled, setIsEnabled ] = useState(true);
+  
   const onSelectCivilStatus = (e) => {
     dispatch(setCivilStatus(data1.indexOf(e) + 1));
   }
@@ -169,20 +179,31 @@ const Category2 = () => {
             setDetailInput(enteredValue);
                 break;
     } 
+    dispatch(setDetail(enteredValue));
   }
 
+  const handleNext = () => {
+    dispatch(incrementIndex());
+    dispatch(setDetail(detailInput));
+  }
+
+  const handleBack = () => {
+    dispatch(decrementIndex());
+  }
 
   useEffect(() =>{
+    // console.log(detailInput)
     console.log(detailInput)
-    if(detailInput.length > 0 && civilStatus > 0 && realEstate > 0 && childSupport > 0){
+    if(detailInput != '' && civilStatus > 0 && realEstate > 0 && childSupport > 0){
       dispatch(setStep3Detail(true))
+      setIsEnabled(false);
     }
-
   },[
     detailInput, 
     civilStatus,
     realEstate,
-    childSupport
+    childSupport,
+    index
   ])
   return (
     <KeyboardAvoidingView
@@ -406,7 +427,7 @@ const Category2 = () => {
         <View className='bg-white pb-8'>
           <View className='mx-5 pt-4'>
             <TextInput style={{height:140, textAlignVertical:'top', fontSize:15 ,borderBottomWidth: 1, borderBottomColor: '#7E7E7E'}} placeholder={'ご相談内容を端的にご記入ください。(いつどこで 誰が誰に何をするのか、どうしたいのかを意識し てご記入いただけますとより具体的な回答が期待 できます。)'}
-            multiline={true} onChangeText={updateInputValueHandler.bind(this, 'detailInput')} />
+            multiline={true} onChangeText={updateInputValueHandler.bind(this, 'detailInput')} defaultValue={detailInput}/>
           </View>
           <View className='mt-6 flex-row justify-center'>
             <Pressable className='w-10/12 rounded-sm flex-row justify-center gap-2' style={{ backgroundColor: '#EEEEEE' }}
@@ -424,7 +445,15 @@ const Category2 = () => {
           </View>
         </View>       
       </ScrollView>
-
+      
+      <View className='flex-row justify-center gap-3.5 bg-white pb-2 px-3'>
+        <TouchableOpacity onPress={handleBack} className='flex-1 py-1.5' style={{ backgroundColor: '#F2F2F2'}} disabled={false}>
+          <Text className='text-center'>もどる</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={handleNext} className='flex-1 py-1.5' style={{ backgroundColor: `${isEnabled ? '#837D93' : '#17AAB1'}`}} disabled={isEnabled}>
+          <Text className='text-center text-white'>つぎへ</Text>
+        </TouchableOpacity>
+      </View>
     </KeyboardAvoidingView>
   )
 }
