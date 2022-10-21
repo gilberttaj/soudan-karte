@@ -28,7 +28,7 @@ import {
   setChildSupport
 } from '../../redux/category2Slice';
 import RadioButtonRN from 'radio-buttons-react-native';
-import { incrementIndex, decrementIndex } from '../../redux/consultationSlice';
+
 
 const Category2 = () => {
   const situations = [
@@ -139,22 +139,28 @@ const Category2 = () => {
   const [houseHoldAnnualDefaultValue , setHouseHoldAnnualDefaultValue ] = useState(selectedHouseHoldAnnual);
   const [childrenDefaultValue , setChildrenDefaultValue ] = useState(selectedChild);
   const [essentialDefaultValue, setEssentialDefaultValue] = useState(selectedEssential)
-  const [civilStatusDefaultValue, setCivilStatusDefaultValue] = useState(selectedCivilStatus)
-  const [haveRealEstateDefaultValue, setHaveRealEstateDefaultValue] = useState(selectedHaveRealEstate)
-  const [childSupportDefaultValue, setChildSupportDefaultValue] = useState(selectedChildSupport)
+  const [civilStatusDefaultValue, setCivilStatusDefaultValue] = useState(null)
+  const [haveRealEstateDefaultValue, setHaveRealEstateDefaultValue] = useState(null)
+  const [childSupportDefaultValue, setChildSupportDefaultValue] = useState(null)
   // const [ inputtedDefaultValue, setInputtedDefaultValue ] = useState(inputtedDetail);
   
   
   const [ isEnabled, setIsEnabled ] = useState(true);
+
+  console.log(childSupportDefaultValue);
   
   const onSelectCivilStatus = (e) => {
-    dispatch(setCivilStatus(data1.indexOf(e) + 1));
+    // dispatch(setCivilStatus(data1.indexOf(e) + 1));
+    setCivilStatusDefaultValue(data1.indexOf(e) + 1)
+
   }
   const onSelectHaveRealEstate = (e) => {
-    dispatch(setHaveRealEstate(data2.indexOf(e) + 1));
+    // dispatch(setHaveRealEstate(data2.indexOf(e) + 1));
+    setHaveRealEstateDefaultValue(data2.indexOf(e) + 1)
   }
   const onSelectChildSupport = (e) => {
-    dispatch(setChildSupport(data3.indexOf(e) + 1));
+    // dispatch(setChildSupport(data3.indexOf(e) + 1));
+    setChildSupportDefaultValue(data3.indexOf(e) + 1)
   }
   
   const pickImage = async () => {
@@ -185,23 +191,47 @@ const Category2 = () => {
 
 
   useEffect(() =>{
-    // console.log(detailInput)
     console.log(detailInput)
-    if(detailInput != '' && civilStatus > 0 && realEstate > 0 && childSupport > 0){
-      dispatch(setStep3Detail(true))
+    if(detailInput != '' && civilStatusDefaultValue > 0 && haveRealEstateDefaultValue > 0 && childSupportDefaultValue > 0){
       setIsEnabled(false);
     }
   },[
-    detailInput, 
-    civilStatus,
-    realEstate,
-    childSupport,
-    index
+    detailInput,
+    civilStatusDefaultValue,
+    haveRealEstateDefaultValue,
+    childSupportDefaultValue
   ])
+
+
+
+
 
   const handleNext = () => {
     dispatch(incrementIndex());
     // dispatch(setDetail(detailInput))
+    if(civilStatusDefaultValue == 1){
+      dispatch(setCivilStatus('同居中'))
+    }
+
+    if(civilStatusDefaultValue == 2){
+      dispatch(setCivilStatus('別居中'))
+    }
+
+    if(haveRealEstateDefaultValue == 1){
+      dispatch(setHaveRealEstate('持っている'))
+    }
+
+    if(haveRealEstateDefaultValue == 2){
+      dispatch(setHaveRealEstate('持っていない'))
+    }
+
+    if(childSupportDefaultValue == 1){
+      dispatch(setChildSupport('知っている'))
+    }
+
+    if(childSupportDefaultValue == 2){
+      dispatch(setChildSupport('知らない'))
+    }
   }
 
   const handleBack = () => {
