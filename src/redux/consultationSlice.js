@@ -41,6 +41,7 @@ export const consultationSlice = createSlice({
             state.index = 0
         },
         setDetail: (state, action) => {
+            console.log(action)
             state.detail = action.payload
         },
         setIsEnabled: (state, action) => {
