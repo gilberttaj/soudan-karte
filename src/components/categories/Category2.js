@@ -20,10 +20,12 @@ import {
   setRelationshipDuration, 
   setMap, 
   setChildren, 
-  setDetail, 
   setCat1Image,
   setEssentials,
-} from '../../redux/category1Slice';
+  setCivilStatus,
+  setHaveRealEstate,
+  setChildSupport
+} from '../../redux/category2Slice';
 import RadioButtonRN from 'radio-buttons-react-native';
 
 const Category2 = () => {
@@ -94,15 +96,18 @@ const Category2 = () => {
   
   const dispatch = useDispatch();
 
-  const situation = useSelector(state => state.category1?.situation)
-  const relationshipDuration = useSelector(state => state.category1?.relationshipDuration)
-  const consultationType = useSelector(state => state.category1?.consultationType)
-  const detail = useSelector(state => state.category1?.detail)
+  const situation = useSelector(state => state.category2?.situation)
+  const relationshipDuration = useSelector(state => state.category2?.relationshipDuration)
+  const consultationType = useSelector(state => state.category2?.consultationType)
+  const detail = useSelector(state => state.category2?.detail)
   const step3Detail = useSelector(state => state.consultation?.step3Detail)
-  const houseHoldAnnual = useSelector(state => state.householdAnnual?.householdAnnual)
-  const map = useSelector(state => state.map?.map)
-  const child = useSelector(state => state.child?.child)
-  const essential =useSelector(state => state.essential?.essential)
+  const houseHoldAnnual = useSelector(state => state.category2?.householdAnnual)
+  const map = useSelector(state => state.category2?.map)
+  const child = useSelector(state => state.category2?.child)
+  const essential =useSelector(state => state.category2?.essential)
+  const civilStatus = useSelector(state => state.category2?.civilStatus)
+  const realEstate = useSelector(state => state.category2?.haveRealEstate)
+  const childSupport = useSelector(state => state.category2?.childSupport)
   
   const selectedSituation = situation ? situation : '未婚'; 
   const selectedRelationshipDuration = relationshipDuration ? relationshipDuration : '2年未滿';
@@ -113,6 +118,9 @@ const Category2 = () => {
   const selectedEssential = essential ? essential : '養育費を取り決めたい'
 
   const inputItem = step3Detail ? step3Detail : '';
+  const selectedCivilStatus = civilStatus ? civilStatus : 0;
+  const selectedHaveRealEstate = realEstate ? realEstate : 0;
+  const selectedChildSupport = childSupport ? childSupport : 0;
 
   const headerHeight = useHeaderHeight();
   
@@ -125,6 +133,19 @@ const Category2 = () => {
   const [houseHoldAnnualDefaultValue , setHouseHoldAnnualDefaultValue ] = useState(selectedHouseHoldAnnual);
   const [childrenDefaultValue , setChildrenDefaultValue ] = useState(selectedChild);
   const [essentialDefaultValue, setEssentialDefaultValue] = useState(selectedEssential)
+  const [civilStatusDefaultValue, setCivilStatusDefaultValue] = useState(selectedCivilStatus)
+  const [haveRealEstateDefaultValue, setHaveRealEstateDefaultValue] = useState(selectedHaveRealEstate)
+  const [childSupportDefaultValue, setChildSupportDefaultValue] = useState(selectedChildSupport)
+  const onSelectCivilStatus = (e) => {
+    dispatch(setCivilStatus(data1.indexOf(e) + 1));
+  }
+  const onSelectHaveRealEstate = (e) => {
+    dispatch(setHaveRealEstate(data2.indexOf(e) + 1));
+  }
+  const onSelectChildSupport = (e) => {
+    dispatch(setChildSupport(data3.indexOf(e) + 1));
+  }
+  
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -152,11 +173,17 @@ const Category2 = () => {
 
 
   useEffect(() =>{
-    if(detailInput.length > 0){
+    console.log(detailInput)
+    if(detailInput.length > 0 && civilStatus > 0 && realEstate > 0 && childSupport > 0){
       dispatch(setStep3Detail(true))
     }
 
-  },[detailInput])
+  },[
+    detailInput, 
+    civilStatus,
+    realEstate,
+    childSupport
+  ])
   return (
     <KeyboardAvoidingView
     keyboardVerticalOffset={headerHeight}
@@ -228,11 +255,12 @@ const Category2 = () => {
             </Text>
             <View className="ml-4">
               <RadioButtonRN
-                data={data1}
-                // selectedBtn={}
+                data={data1} 
+                selectedBtn={onSelectCivilStatus}
                 circleSize={12}
                 activeColor='#17AAB1'
                 box={false}
+                initial={civilStatusDefaultValue}
               />
             </View>
           </View>
@@ -295,10 +323,11 @@ const Category2 = () => {
             <View className="ml-4">
               <RadioButtonRN
                 data={data2}
-                // selectedBtn={}
+                selectedBtn={onSelectHaveRealEstate}
                 circleSize={12}
                 activeColor='#17AAB1'
                 box={false}
+                initial={haveRealEstateDefaultValue}
               />
             </View>
           </View>
@@ -364,9 +393,11 @@ const Category2 = () => {
               <RadioButtonRN
                 data={data3}
                 // selectedBtn={}
+                selectedBtn={onSelectChildSupport}
                 circleSize={12}
                 activeColor='#17AAB1'
                 box={false}
+                initial={childSupportDefaultValue}
               />
             </View>
           </View>
