@@ -1,15 +1,10 @@
-import { useState } from "react";
-import consultationSlice from "./consultationSlice";
-
-
-
+import * as ImagePicker from 'expo-image-picker';
 
 
 //image upload
-let result
 const pickImage = async () => {
   // No permissions request is necessary for launching the image library
-    result = await ImagePicker.launchImageLibraryAsync({
+    const result = await ImagePicker.launchImageLibraryAsync({
     mediaTypes: ImagePicker.MediaTypeOptions.All,
     allowsEditing: true,
     aspect: [4, 3],

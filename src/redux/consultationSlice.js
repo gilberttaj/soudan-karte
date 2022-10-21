@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import consultationService from './consultationService';
 
 const initialState = {
     index: 0,
@@ -11,6 +12,17 @@ const initialState = {
     isEnabled: false,
     image: null,
 }
+
+
+//Upload Image
+export const pickImage = createAsyncThunk('consultation/pickImage', async () => {
+	try{
+		return await consultationService.pickImage()
+	}catch(error){
+		return console.log('error', error)
+	}
+})
+
 
 export const consultationSlice = createSlice({
     name: 'consultation',
@@ -51,6 +63,12 @@ export const consultationSlice = createSlice({
             state.image = action.payload
         }   
     },
+    extraReducers: (builder) => {
+        builder
+            .addCase(pickImage.fulfilled, (state, action) => {
+                state.image = action.payload
+            })
+    }
 })
 
 export const { incrementIndex,decrementIndex, setCategoryName, setPrefecture, setAge, setGender, setStep3Detail, resetIndex, setDetail, setIsEnabled } = consultationSlice.actions

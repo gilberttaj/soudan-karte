@@ -4,7 +4,7 @@ import SelectDropdown from 'react-native-select-dropdown';
 import { useHeaderHeight } from '@react-navigation/elements';
 import * as ImagePicker from 'expo-image-picker';
 import { useDispatch, useSelector } from 'react-redux';
-import { decrementIndex, incrementIndex, setDetail, setImage } from '../../redux/consultationSlice';
+import { decrementIndex, incrementIndex, pickImage, setDetail } from '../../redux/consultationSlice';
 import { setSituation, setConsultationType, setRelationshipDuration, setCat1Image } from '../../redux/category1Slice';
 
 // import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -45,6 +45,7 @@ const category1 = () => {
   const detail = useSelector(state => state.consultation?.detail)
   const index = useSelector(state => state.consultation?.index)
   const isEnabled = useSelector(state => state.consultation?.isEnabled)
+  const uploadedImage = useSelector(state => state.consultation?.image)
   
   const selectedSituation = situation ? situation : '未婚'; 
   const selectedRelationshipDuration = relationshipDuration ? relationshipDuration : '2年未滿';
@@ -53,8 +54,8 @@ const category1 = () => {
 
 
   const headerHeight = useHeaderHeight();
-  const [image, setImage] = useState(null);
-  const [detailInput , setDetailInput] = useState('');
+  const [image, setImage] = useState(uploadedImage);
+  const [detailInput , setDetailInput] = useState(inputtedDetail);
 
   const [ situationDefaultValue , setSituationDefaultValue ] = useState(selectedSituation);
 
@@ -68,23 +69,11 @@ const category1 = () => {
 
   console.log(isEnabled);
 
-  let result
-  const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
-      result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
+  const onImagePick = () => {
+    dispatch(pickImage());
+  }
 
-    console.log('result',result);
-
-    if (!result.cancelled) {
-      setImage(result.uri);
-      setCat1Image(result.uri);
-    }
-  };
+  console.log(uploadedImage)
 
   useEffect(() =>{
     if(detailInput != ''){
@@ -112,6 +101,7 @@ const category1 = () => {
   const handleChangeText = (text) => {
     setDetailInput(text);
   }
+
 
 
 
@@ -219,7 +209,7 @@ const category1 = () => {
           </View>
           <View className='mt-6 flex-row justify-center'>
             <Pressable className='w-10/12 rounded-sm flex-row justify-center gap-2' style={{ backgroundColor: '#EEEEEE' }}
-            onPress={pickImage}>
+            onPress={onImagePick}>
               <Image source={require('../../../assets/ic_media_upload.png')} style={{height:30, width:30}}/>
               <Text className='font-semibold self-center' style={{ color: '#858585' }}>
                 画像を一緒に送る
@@ -228,7 +218,7 @@ const category1 = () => {
           </View>
 
           <View className='ml-8 mt-2'>
-            {image && <Image source={{ uri: image }} style={{ width: 150, height: 150 }} />}
+            {uploadedImage && <Image source={{ uri: uploadedImage }} style={{ width: 150, height: 150 }} />}
           </View>
         </View>       
       </ScrollView>

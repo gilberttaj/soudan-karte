@@ -68,9 +68,9 @@ const Confirm1 = () => {
                             <Text>{detail}</Text>
                         </View>
 
-                        {/* <View className='pl-5 mb-3'>
-                            {image && <Image source={{ uri:  }} style={{ width: 150, height: 150 }} />}
-                        </View> */}
+                        <View className='pl-5 mb-3'>
+                            {image && <Image source={{ uri: image  }} style={{ width: 150, height: 150 }} />}
+                        </View>
                     </View>
                 </View>
 
