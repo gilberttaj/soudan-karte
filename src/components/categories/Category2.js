@@ -123,9 +123,9 @@ const Category2 = () => {
   
 
   const inputItem = step3Detail ? step3Detail : '';
-  const selectedCivilStatus = civilStatus ? civilStatus : 0;
-  const selectedHaveRealEstate = realEstate ? realEstate : 0;
-  const selectedChildSupport = childSupport ? childSupport : 0;
+  const selectedCivilStatus = civilStatus == '同居中' ? 1 : civilStatus == '別居中' ? 2 : null;
+  const selectedHaveRealEstate = realEstate == '持っている' ? 1 : realEstate == '持っていない' ? 2 : null;
+  const selectedChildSupport = childSupport == '知っている' ? 1 : childSupport == '知らない' ? 2 : null;
   const inputtedDetail = detail ? detail : '';
   
   const headerHeight = useHeaderHeight();
@@ -139,11 +139,10 @@ const Category2 = () => {
   const [houseHoldAnnualDefaultValue , setHouseHoldAnnualDefaultValue ] = useState(selectedHouseHoldAnnual);
   const [childrenDefaultValue , setChildrenDefaultValue ] = useState(selectedChild);
   const [essentialDefaultValue, setEssentialDefaultValue] = useState(selectedEssential)
-  const [civilStatusDefaultValue, setCivilStatusDefaultValue] = useState(null)
-  const [haveRealEstateDefaultValue, setHaveRealEstateDefaultValue] = useState(null)
-  const [childSupportDefaultValue, setChildSupportDefaultValue] = useState(null)
+  const [civilStatusDefaultValue, setCivilStatusDefaultValue] = useState(selectedCivilStatus)
+  const [haveRealEstateDefaultValue, setHaveRealEstateDefaultValue] = useState(selectedHaveRealEstate)
+  const [childSupportDefaultValue, setChildSupportDefaultValue] = useState(selectedChildSupport)
   // const [ inputtedDefaultValue, setInputtedDefaultValue ] = useState(inputtedDetail);
-  
   
   const [ isEnabled, setIsEnabled ] = useState(true);
   
