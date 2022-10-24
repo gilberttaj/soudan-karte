@@ -146,8 +146,6 @@ const Category2 = () => {
   
   
   const [ isEnabled, setIsEnabled ] = useState(true);
-
-  console.log(childSupportDefaultValue);
   
   const onSelectCivilStatus = (e) => {
     // dispatch(setCivilStatus(data1.indexOf(e) + 1));
@@ -172,8 +170,6 @@ const Category2 = () => {
       quality: 1,
     });
 
-    // console.log(result);
-
     if (!result.cancelled) {
       setImage(result.uri);
       setCat1Image(result.uri);
@@ -191,7 +187,6 @@ const Category2 = () => {
 
 
   useEffect(() =>{
-    console.log(detailInput)
     if(detailInput != '' && civilStatusDefaultValue > 0 && haveRealEstateDefaultValue > 0 && childSupportDefaultValue > 0){
       setIsEnabled(false);
     }
