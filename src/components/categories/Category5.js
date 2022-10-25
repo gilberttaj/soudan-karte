@@ -5,14 +5,14 @@ import { useHeaderHeight } from '@react-navigation/elements';
 import * as ImagePicker from 'expo-image-picker';
 import { useDispatch, useSelector } from 'react-redux';
 import { decrementIndex, incrementIndex, pickImage, setDetail } from '../../redux/consultationSlice';
-import { setPropertyValue, setNumberOfHeirs, setConsultationSummary, setIsDeceased } from '../../redux/category5Slice';
+import { setPropertyValue, setNumberOfHeirs, setConsultationSummary, setIsDeceased, setDateOfInheritance, setIncludeRealEstate } from '../../redux/category5Slice';
 import RadioButtonRN from 'radio-buttons-react-native';
 import CalendarPicker from 'react-native-calendar-picker';
 
 
 // import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-const situations = [
+const selection1 = [
   "3,000万円未満",
   "3,000万円~5,000万円",
   "5,000万円~1億円",
@@ -21,7 +21,7 @@ const situations = [
   "わからない",
 ]
 
-const relationshipDurations = [
+const selection2 = [
   '1名',
   '2~7名',
   '8名以上',
@@ -29,7 +29,7 @@ const relationshipDurations = [
   'わからない',
 ]
 
-const consultationTypes = [
+const selection3 = [
   '紛争解決',
   '分割協議書作成',
   '諸手続き',
@@ -68,12 +68,15 @@ const category5 = () => {
   const includeRealEstate = useSelector(state => state.category5?.includeRealEstate)
   const numberOfHeirs = useSelector(state => state.category5?.numberOfHeirs)
   const consultationSummary = useSelector(state => state.category5?.consultationSummary)
-  const timeOfInheritance = useSelector(state => state.category5?.timeOfInheritance)
+  const dateOfInheritance = useSelector(state => state.category5?.dateOfInheritance)
   const detail = useSelector(state => state.consultation?.detail)
   const index = useSelector(state => state.consultation?.index)
   const isEnabled = useSelector(state => state.consultation?.isEnabled)
   const uploadedImage = useSelector(state => state.consultation?.image)
   
+  const selectedVitalStatus = isDeceased == 'はい' ? 1 : isDeceased == 'まだ亡くなっていない' ?  2 : null;
+  const selectedIncludeRealEstate = includeRealEstate == 'はい' ? 1 : includeRealEstate == 'いいえ' ?  2 : null;
+  const selectedDate = dateOfInheritance ? dateOfInheritance : '';
   const selectedPropertyValue = propertyValue ? propertyValue : '未婚'; 
   const selectedNumberOfHeirs = numberOfHeirs ? numberOfHeirs : '2年未滿';
   const selectedConsultationSummary = consultationSummary ? consultationSummary : 'その他'
@@ -94,15 +97,17 @@ const category5 = () => {
 
   const [ isDisabled, setIsDisabled ] = useState(true);
 
-  const [vitalStatusDefaultValue, setVitalStatusDefaultValue] = useState(null)
-  const [includeRealEstateDefaultValue, setIncludeRealEstateDefaultValue] = useState(null)
+  const [vitalStatusDefaultValue, setVitalStatusDefaultValue] = useState(selectedVitalStatus)
+  const [includeRealEstateDefaultValue, setIncludeRealEstateDefaultValue] = useState(selectedIncludeRealEstate)
 
-  const [selectedStartDate, setSelectedStartDate] = useState(null)
+  const [selectedStartDate, setSelectedStartDate] = useState(selectedDate)
 
 
   const date = selectedStartDate
-    ? selectedStartDate.format('YYYY/MM/DD').toString()
+    ? selectedStartDate?.format('YYYY/MM/DD').toString()
     : '';
+
+    console.log(selectedStartDate.toString());
 
   // console.log(isEnabled);
 
@@ -130,12 +135,14 @@ const category5 = () => {
     }
 
     if(includeRealEstateDefaultValue == 1){
-      dispatch(setIsDeceased('はい'))
+      dispatch(setIncludeRealEstate('はい'))
     }
 
     if(includeRealEstateDefaultValue == 2){
-      dispatch(setIsDeceased('いいえ'))
+      dispatch(setIncludeRealEstate('いいえ'))
     }
+
+    dispatch(setDateOfInheritance(selectedStartDate));
   }
 
   const handleBack = () => {
@@ -149,6 +156,8 @@ const category5 = () => {
 
   const onSelectedVitalStatus = (e) => {
     setVitalStatusDefaultValue(data1.indexOf(e) + 1)
+    setIncludeRealEstateDefaultValue(null);
+    setSelectedStartDate('');
   }
 
   const onSelectedIncludeRealEstate = (e) => {
@@ -167,9 +176,13 @@ const category5 = () => {
         setIsDisabled(false);
       }
     }
-
-  
   },[detailInput,date, vitalStatusDefaultValue, includeRealEstateDefaultValue])
+
+  useEffect(() => {
+    if(!includeRealEstateDefaultValue){
+      setIsDisabled(true);
+    }
+  }, [vitalStatusDefaultValue])
 
 
 
@@ -209,7 +222,7 @@ const category5 = () => {
               <View className='flex-row justify-end'>
                 <View className='w-1/2 mr-5 mt-2'>
                   <SelectDropdown
-                          data={situations}
+                          data={selection1}
                           onSelect={(selectedItem, index) => {
                             dispatch(setPropertyValue(selectedItem));
                           }}
@@ -252,7 +265,7 @@ const category5 = () => {
               <View className='flex-row justify-end'>
                 <View className='mr-5 mt-2'>
                   <SelectDropdown
-                          data={relationshipDurations}
+                          data={selection2}
                           onSelect={(selectedItem, index) => {
                             dispatch(setNumberOfHeirs(selectedItem));
                           }}
@@ -278,7 +291,7 @@ const category5 = () => {
               <View className='flex-row justify-end'>
                 <View className='mr-5 mt-2'>
                   <SelectDropdown
-                          data={consultationTypes}
+                          data={selection3}
                           onSelect={(selectedItem, index) => {
                             dispatch(setConsultationSummary(selectedItem));
                           }}
@@ -306,7 +319,7 @@ const category5 = () => {
               </Text>
             <View className='mt-2'>
               <CalendarPicker onDateChange={setSelectedStartDate}
-                selectedDayColor='#17AAB1' width={340}/>
+                selectedDayColor='#17AAB1' width={340} selectedStartDate={selectedDate}/>
               <Text className='ml-5'>Selected: {date}</Text>
             </View>
             </View>
