@@ -34,7 +34,7 @@ import CreditCardInfoScreen from '../screens/settings/CreditCardInfo';
 import UserSupportScreen from '../screens/settings/UserSupport';
 import { imageUrl } from '../../assets/Icons';
 import { HeaderBackButton } from 'react-navigation-stack';
-import { resetIndex, setCategoryName, setIsEnabled, setDetail } from '../redux/consultationSlice';
+import { resetIndex, setCategoryName, setIsEnabled, setDetail, resetImage } from '../redux/consultationSlice';
 
 
 
@@ -143,6 +143,7 @@ const AuthStack = () => {
         dispatch(setCategoryName(null))
         dispatch(setIsEnabled(false))
         dispatch(setDetail(''))
+        dispatch(resetImage())
         navigation.goBack();
     }
 
@@ -223,7 +224,7 @@ const BottomNavigator = () => {
                 ...TransitionPresets.SlideFromRightIOS
             }}>
                 <Tab.Screen name="MedicalRecords" component={MedicalRecordsStack} options={{
-                            tabBarIcon: ({color, size}) => (<Ionicons name="create" color={color} size={size}></Ionicons>),
+                            tabBarIcon: ({color, size}) => (<Image source={require('../../assets/ic_tab_karte.png')} style={{tintColor: `${color}`, width:32, height:32}}/>),
                             title: '相談力ルテ作成',
                             tabBarLabel: 'カルテ登録'
                 }}/>
@@ -232,7 +233,7 @@ const BottomNavigator = () => {
                             title: '専門家連絡',
                 }}/>
                 <Tab.Screen name="Mypage" component={MypageStack} options={{
-                            tabBarIcon: ({color, size}) => (<Ionicons name="person" color={color} size={size}></Ionicons>),
+                            tabBarIcon: ({color, size}) => (<Image source={require('../../assets/ic_tab_mypage.png')} style={{tintColor: `${color}`, width:32, height:32}}/>),
                             title: 'マイページ',
                             headerRight: (props) => (
                             <TouchableOpacity

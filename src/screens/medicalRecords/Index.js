@@ -30,7 +30,7 @@ const Index = () => {
     }
   },[isFocused])
 
-
+  console.log(isVisible);
 
   const handleCloseModal = () => {
     setIsVisible(false);
@@ -79,7 +79,7 @@ const Index = () => {
     }
 
     Linking.openURL(phoneNumber);
- }
+}
   
   return (
     <>
@@ -135,7 +135,7 @@ const Index = () => {
         </View>
 
         <View className='bg-white justify-center items-center flex-1 relative'>
-            <Modal isModal={isVisible}  onDismiss={handleCloseModal}>
+            <Modal isVisible={isVisible}  onDismiss={handleCloseModal}>
               <View className='items-center flex-row bg-neutral-100 py-3 justify-center'>
                 <TouchableOpacity className='pl-3 ml-auto absolute left-0' onPress={handleCloseModal}>
                   <Ionicons name='close-outline' size={35} color='gray'/>
@@ -187,7 +187,7 @@ const Index = () => {
         </View>
       </Modal>
       
-       <Modal isVisible={isModalNumber}  onDismiss={handleCloseModal}>
+      <Modal isVisible={isModalNumber}  onDismiss={handleCloseModal}>
         <View className='bg-white p-5'>
           <View className="">
             <Text className="text-xl font-bold">0120542063</Text>

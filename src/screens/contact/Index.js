@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react'
@@ -39,9 +39,8 @@ const Index = () => {
   return (
     <>
     <View className='flex-1 justify-center items-center'>
-      <View className="flex-row ml-8">
-        <Ionicons name='person-outline' size={80} color='gray'/>
-        <Ionicons name="chatbox-outline" style={styles.chat} size={55} color="gray"/>
+      <View className="flex-row">
+        <Image source={require('../../../assets/img_placeholder_chat.png')} style={{height:80, width:160}}/>
       </View>
       <View className="my-2">
         <Text className='text-base text-stone-500 font-bold'>まだ相談中のトークはありません</Text>
@@ -101,9 +100,9 @@ const Index = () => {
 export default Index
 
 
-const styles = StyleSheet.create({
-  chat:{
-    marginTop: -15,
-    marginLeft: -15,
-  }
-});
+// const styles = StyleSheet.create({
+//   chat:{
+//     marginTop: -15,
+//     marginLeft: -15,
+//   }
+// });

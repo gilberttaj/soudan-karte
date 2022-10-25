@@ -61,7 +61,10 @@ export const consultationSlice = createSlice({
         },
         setImage: (state, action) => {
             state.image = action.payload
-        }   
+        },   
+        resetImage: (state, action) => {
+            state.image = null
+        } 
     },
     extraReducers: (builder) => {
         builder
@@ -71,6 +74,6 @@ export const consultationSlice = createSlice({
     }
 })
 
-export const { incrementIndex,decrementIndex, setCategoryName, setPrefecture, setAge, setGender, setStep3Detail, resetIndex, setDetail, setIsEnabled } = consultationSlice.actions
+export const { incrementIndex,decrementIndex, setCategoryName, setPrefecture, setAge, setGender, setStep3Detail, resetIndex, setDetail, setIsEnabled, resetImage } = consultationSlice.actions
 
 export default consultationSlice.reducer

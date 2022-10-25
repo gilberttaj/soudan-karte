@@ -26,7 +26,7 @@ const Index = () => {
     (
     <View className='flex-1 justify-center items-center'>
       <View>
-        <Ionicons name='person-outline' size={65} color='gray'/>
+        <Image source={require('../../../assets/img_placeholder_profile.png')} style={{height:80, width:160}}/>
       </View>
       <View>
         <Text className='text-gray-700'>ログイン</Text>
