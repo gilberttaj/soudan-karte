@@ -6,6 +6,7 @@ import category2Reducer from './category2Slice'
 import category3Reducer from './category3Slice'
 import category4Reducer from './category4Slice'
 import category5Reducer from './category5Slice'
+import category6Reducer from './category6Slice'
 
 
 
@@ -19,6 +20,7 @@ export const store = configureStore({
         category3: category3Reducer,
         category4: category4Reducer,
         category5: category5Reducer,
+        category6: category6Reducer,
     },
     middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
