@@ -8,6 +8,7 @@ import { decrementIndex, incrementIndex, pickImage, setDetail } from '../../redu
 import { setPropertyValue, setNumberOfHeirs, setConsultationSummary, setIsDeceased, setDateOfInheritance, setIncludeRealEstate } from '../../redux/category5Slice';
 import RadioButtonRN from 'radio-buttons-react-native';
 import CalendarPicker from 'react-native-calendar-picker';
+import moment from 'moment';
 
 
 // import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -76,7 +77,7 @@ const category5 = () => {
   
   const selectedVitalStatus = isDeceased == 'はい' ? 1 : isDeceased == 'まだ亡くなっていない' ?  2 : null;
   const selectedIncludeRealEstate = includeRealEstate == 'はい' ? 1 : includeRealEstate == 'いいえ' ?  2 : null;
-  const selectedDate = dateOfInheritance ? dateOfInheritance : '';
+  const selectedDate = dateOfInheritance ? dateOfInheritance : null;
   const selectedPropertyValue = propertyValue ? propertyValue : '未婚'; 
   const selectedNumberOfHeirs = numberOfHeirs ? numberOfHeirs : '2年未滿';
   const selectedConsultationSummary = consultationSummary ? consultationSummary : 'その他'
@@ -103,14 +104,8 @@ const category5 = () => {
   const [selectedStartDate, setSelectedStartDate] = useState(selectedDate)
 
 
-  const date = selectedStartDate
-    ? selectedStartDate?.format('YYYY/MM/DD').toString()
-    : '';
 
-    console.log(selectedStartDate.toString());
-
-  // console.log(isEnabled);
-
+  
   const onImagePick = () => {
     dispatch(pickImage());
   }
@@ -157,7 +152,6 @@ const category5 = () => {
   const onSelectedVitalStatus = (e) => {
     setVitalStatusDefaultValue(data1.indexOf(e) + 1)
     setIncludeRealEstateDefaultValue(null);
-    setSelectedStartDate('');
   }
 
   const onSelectedIncludeRealEstate = (e) => {
@@ -166,7 +160,7 @@ const category5 = () => {
 
   useEffect(() => {
     if(vitalStatusDefaultValue == 1){
-      if(detailInput != '' && date != '' && includeRealEstateDefaultValue > 0){
+      if(detailInput != '' && selectedStartDate && includeRealEstateDefaultValue > 0){
         setIsDisabled(false);
       }
     }
@@ -176,11 +170,13 @@ const category5 = () => {
         setIsDisabled(false);
       }
     }
-  },[detailInput,date, vitalStatusDefaultValue, includeRealEstateDefaultValue])
+  },[detailInput, selectedStartDate , vitalStatusDefaultValue, includeRealEstateDefaultValue])
 
   useEffect(() => {
-    if(!includeRealEstateDefaultValue){
+    if(vitalStatusDefaultValue == 2){
       setIsDisabled(true);
+      setSelectedStartDate(null);
+      dispatch(setDateOfInheritance(null));
     }
   }, [vitalStatusDefaultValue])
 
@@ -319,8 +315,8 @@ const category5 = () => {
               </Text>
             <View className='mt-2'>
               <CalendarPicker onDateChange={setSelectedStartDate}
-                selectedDayColor='#17AAB1' width={340} selectedStartDate={selectedDate}/>
-              <Text className='ml-5'>Selected: {date}</Text>
+                selectedDayColor='#17AAB1' width={340} selectedStartDate={dateOfInheritance} initialDate={dateOfInheritance? dateOfInheritance: new Date()}/>
+              <Text className='ml-5'>Selected: {selectedStartDate && moment(selectedStartDate).format('YYYY/MM/DD').toString()}</Text>
             </View>
             </View>
           }

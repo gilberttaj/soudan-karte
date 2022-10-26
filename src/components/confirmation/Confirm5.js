@@ -2,6 +2,7 @@ import { View, Text, ScrollView, TouchableOpacity, Image } from 'react-native'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { decrementIndex, setIsEnabled } from '../../redux/consultationSlice'
+import moment from 'moment'
 
 const Confirm5 = () => {
 
@@ -75,10 +76,10 @@ const Confirm5 = () => {
                             <Text>{consultationSummary}</Text>
                         </View>
 
-                      { dateOfInheritance != '' && vitalStatus == 'はい' &&
+                      { vitalStatus == 'はい' &&
                         <View className='pl-5 mb-8'>
                           <Text className='text-primary'>相統時期</Text>
-                          <Text>{dateOfInheritance?.format('YYYY/MM/DD').toString()}</Text>
+                          <Text>{moment(dateOfInheritance).format('YYYY/MM/DD').toString()}</Text>
                         </View>
                       }
 
