@@ -5,6 +5,7 @@ import category1Reducer from './category1Slice'
 import category2Reducer from './category2Slice'
 import category3Reducer from './category3Slice'
 import category4Reducer from './category4Slice'
+import category7Reducer from './category7Slice'
 
 
 
@@ -16,6 +17,7 @@ export const store = configureStore({
         category2: category2Reducer,
         category3: category3Reducer,
         category4: category4Reducer,
+        category7: category7Reducer,
     },
 })
 
